@@ -36,7 +36,7 @@ export default async function SitePosts({
             href={
               process.env.NEXT_PUBLIC_VERCEL_ENV
                 ? `https://${url}`
-                : `http://${data.subdomain}.localhost:3000`
+                : `http://${data.subdomain}.localhost:8888`
             }
             target="_blank"
             rel="noreferrer"

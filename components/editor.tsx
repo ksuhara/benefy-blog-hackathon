@@ -20,7 +20,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
 
   const url = process.env.NEXT_PUBLIC_VERCEL_ENV
     ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
-    : `http://${data.site?.subdomain}.localhost:3000/${data.slug}`;
+    : `http://${data.site?.subdomain}.localhost:8888/${data.slug}`;
 
   // listen to CMD + S and override the default behavior
   useEffect(() => {
