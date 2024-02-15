@@ -127,7 +127,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
         disableLocalStorage
       />
       <h3 className="mb-2 mt-16 text-lg font-semibold dark:text-stone-200">
-        以下はNFT保有者限定コンテンツ↓
+        NFT Locked Content ↓
       </h3>
       <NovelEditor
         className="relative block rounded-md border-2 border-teal-200 text-stone-800 dark:border-teal-800 dark:text-stone-200"

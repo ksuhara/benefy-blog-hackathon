@@ -5,6 +5,8 @@ import BlogCard from "@/components/blog-card";
 import BlurImage from "@/components/blur-image";
 import MDX from "@/components/mdx";
 import { placeholderBlurhash, toDateString } from "@/lib/utils";
+import { LockedSection } from "@/components/locked/locked-section";
+import { LockedContent } from "@/components/locked/locked-content";
 
 export async function generateMetadata({
   params,
@@ -94,6 +96,8 @@ export default async function SitePostPage({
     notFound();
   }
 
+  console.log(data, "data");
+
   return (
     <>
       <div className="flex flex-col items-center justify-center">
@@ -152,7 +156,18 @@ export default async function SitePostPage({
       </div>
 
       <MDX source={data.mdxSource} />
-
+      {data.nftLockConditions && (
+        <>
+          <LockedSection
+            params={{
+              nftLockConditions: data.nftLockConditions,
+              conditionLogic: data.conditionLogic,
+              domain: domain,
+              slug: slug,
+            }}
+          />
+        </>
+      )}
       {data.adjacentPosts.length > 0 && (
         <div className="relative mb-20 mt-10 sm:mt-20">
           <div

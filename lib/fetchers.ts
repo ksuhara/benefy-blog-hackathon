@@ -71,10 +71,30 @@ export async function getPostData(domain: string, slug: string) {
           slug,
           published: true,
         },
-        include: {
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          createdAt: true,
+          description: true,
+          image: true,
+          imageBlurhash: true,
+          content: true,
+          contentLocked: false,
+          conditionLogic: true,
+          nftLockConditions: true,
           site: {
-            include: {
-              user: true,
+            select: {
+              id: true,
+              user: {
+                select: {
+                  id: true,
+                  username: true,
+                  image: true,
+                  name: true,
+                  gh_username: true,
+                },
+              },
             },
           },
         },

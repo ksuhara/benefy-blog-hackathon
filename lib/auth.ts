@@ -1,7 +1,9 @@
 import { getServerSession, type NextAuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
+import { SiweMessage } from "siwe";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 
@@ -20,7 +22,58 @@ export const authOptions: NextAuthOptions = {
         };
       },
     }),
+    CredentialsProvider({
+      name: "Ethereum",
+      credentials: {
+        message: {
+          label: "Message",
+          type: "text",
+          placeholder: "0x0",
+        },
+        signature: {
+          label: "Signature",
+          type: "text",
+          placeholder: "0x0",
+        },
+      },
+      async authorize(credentials) {
+        try {
+          const siwe = new SiweMessage(
+            JSON.parse(credentials?.message || "{}"),
+          );
+          const nextAuthUrl = new URL(siwe.uri);
+
+          const result = await siwe.verify({
+            signature: credentials?.signature || "",
+            domain: nextAuthUrl.host,
+            nonce: siwe.nonce,
+          });
+
+          if (result.success) {
+            await prisma.user.upsert({
+              where: {
+                id: siwe.address,
+              },
+              update: {
+                id: siwe.address,
+                name: siwe.address,
+              },
+              create: {
+                id: siwe.address,
+                name: siwe.address,
+              },
+            });
+            return {
+              id: siwe.address,
+            };
+          } else return null;
+        } catch (e) {
+          return null;
+        }
+      },
+    }),
   ],
+
   pages: {
     signIn: `/login`,
     verifyRequest: `/login`,
