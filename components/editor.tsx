@@ -36,7 +36,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
     return () => {
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [data, startTransitionSaving]);
+  }, [data]);
 
   return (
     <div className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
@@ -124,6 +124,33 @@ export default function Editor({ post }: { post: PostWithSite }) {
             await updatePost(data);
           });
         }}
+        disableLocalStorage
+      />
+      <h3 className="mb-2 mt-16 text-lg font-semibold dark:text-stone-200">
+        以下はNFT保有者限定コンテンツ↓
+      </h3>
+      <NovelEditor
+        className="relative block rounded-md border-2 border-teal-200 text-stone-800 dark:border-teal-800 dark:text-stone-200"
+        defaultValue={post?.contentLocked || undefined}
+        onUpdate={(editor) => {
+          setData((prev) => ({
+            ...prev,
+            contentLocked: editor?.storage.markdown.getMarkdown(),
+          }));
+        }}
+        onDebouncedUpdate={() => {
+          if (
+            data.title === post.title &&
+            data.description === post.description &&
+            data.contentLocked === post.contentLocked
+          ) {
+            return;
+          }
+          startTransitionSaving(async () => {
+            await updatePost(data);
+          });
+        }}
+        disableLocalStorage
       />
     </div>
   );

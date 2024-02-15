@@ -8,6 +8,7 @@ import {
   Globe,
   Layout,
   LayoutDashboard,
+  Lock,
   Megaphone,
   Menu,
   Newspaper,
@@ -20,45 +21,15 @@ import {
   usePathname,
   useSelectedLayoutSegments,
 } from "next/navigation";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { getSiteFromPostId } from "@/lib/actions";
 import Image from "next/image";
 
 const externalLinks = [
   {
-    name: "Read announcement",
-    href: "https://vercel.com/blog/platforms-starter-kit",
-    icon: <Megaphone width={18} />,
-  },
-  {
-    name: "Star on GitHub",
-    href: "https://github.com/vercel/platforms",
-    icon: <Github width={18} />,
-  },
-  {
     name: "Read the guide",
     href: "https://vercel.com/guides/nextjs-multi-tenant-application",
     icon: <FileCode width={18} />,
-  },
-  {
-    name: "View demo site",
-    href: "https://demo.vercel.pub",
-    icon: <Layout width={18} />,
-  },
-  {
-    name: "Deploy your own",
-    href: "https://vercel.com/templates/next.js/platforms-starter-kit",
-    icon: (
-      <svg
-        width={18}
-        viewBox="0 0 76 76"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="py-1 text-black dark:text-white"
-      >
-        <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="currentColor" />
-      </svg>
-    ),
   },
 ];
 
@@ -67,13 +38,21 @@ export default function Nav({ children }: { children: ReactNode }) {
   const { id } = useParams() as { id?: string };
 
   const [siteId, setSiteId] = useState<string | null>();
+  const previousIdRef = useRef<string | undefined>();
 
   useEffect(() => {
-    if (segments[0] === "post" && id) {
+    const isFirstRun = previousIdRef.current === undefined;
+
+    if (
+      segments[0] === "post" &&
+      id &&
+      (isFirstRun || previousIdRef.current !== id)
+    ) {
       getSiteFromPostId(id).then((id) => {
         setSiteId(id);
       });
     }
+    previousIdRef.current = id;
   }, [segments, id]);
 
   const tabs = useMemo(() => {
@@ -115,6 +94,12 @@ export default function Nav({ children }: { children: ReactNode }) {
           href: `/post/${id}`,
           isActive: segments.length === 2,
           icon: <Edit3 width={18} />,
+        },
+        {
+          name: "NFT Lock",
+          href: `/post/${id}/nft-settings`,
+          isActive: segments.includes("nft-settings"),
+          icon: <Lock width={18} />,
         },
         {
           name: "Settings",

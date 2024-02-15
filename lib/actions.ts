@@ -286,6 +286,7 @@ export const updatePost = async (data: Post) => {
         title: data.title,
         description: data.description,
         content: data.content,
+        contentLocked: data.contentLocked,
       },
     });
 
@@ -351,6 +352,88 @@ export const updatePostMetadata = withPostAuth(
         });
       }
 
+      await revalidateTag(
+        `${post.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-posts`,
+      );
+      await revalidateTag(
+        `${post.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-${post.slug}`,
+      );
+
+      // if the site has a custom domain, we need to revalidate those tags too
+      post.site?.customDomain &&
+        (await revalidateTag(`${post.site?.customDomain}-posts`),
+        await revalidateTag(`${post.site?.customDomain}-${post.slug}`));
+
+      return response;
+    } catch (error: any) {
+      if (error.code === "P2002") {
+        return {
+          error: `This slug is already in use`,
+        };
+      } else {
+        return {
+          error: error.message,
+        };
+      }
+    }
+  },
+);
+
+export const updatePostNFTGateway = withPostAuth(
+  async (
+    formData: FormData,
+    post: Post & {
+      site: Site;
+    },
+  ) => {
+    const lockConditionsStr = formData.get("lockConditions") as string;
+    let lockConditions;
+    try {
+      lockConditions = JSON.parse(lockConditionsStr);
+    } catch (error) {
+      return {
+        error: "Invalid lockConditions format",
+      };
+    }
+    const conditionLogic = formData.get("conditionLogic") as string;
+
+    console.log(lockConditions, "lockConditions");
+    console.log(conditionLogic, "conditionLogic");
+    try {
+      await prisma.nFTLockCondition.deleteMany({
+        where: {
+          postId: post.id,
+        },
+      });
+      for (const {
+        chainId,
+        contractAddress,
+        collectionName,
+      } of lockConditions) {
+        await prisma.nFTLockCondition.create({
+          data: {
+            chainId,
+            contractAddress,
+            collectionName,
+            post: {
+              connect: {
+                id: post.id,
+              },
+            },
+          },
+        });
+      }
+
+      const response = await prisma.post.update({
+        where: {
+          id: post.id,
+        },
+        data: {
+          conditionLogic: conditionLogic,
+        },
+      });
+
+      console.log(response, "response");
       await revalidateTag(
         `${post.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-posts`,
       );
