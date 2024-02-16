@@ -75,12 +75,19 @@ export function LockedSection({
       collectionName: string | null;
     }[];
     conditionLogic: string;
+    contentLockedLength: number | null;
   };
 }) {
   const { isConnected } = useAccount();
   console.log(isConnected, "isConnected");
 
-  const { domain, slug } = params;
+  const {
+    domain,
+    slug,
+    nftLockConditions,
+    conditionLogic,
+    contentLockedLength,
+  } = params;
 
   return (
     <>
@@ -90,10 +97,12 @@ export function LockedSection({
           {/* <!-- Card header --> */}
           <div className="border-b border-dashed border-stone-300 p-5">
             <h1 className="text-lg font-semibold">続きをみるには</h1>
-            <p className="text-sm text-stone-600">残り 3,912字 / 5画像</p>
-            {params.nftLockConditions.length >= 2 && (
+            <p className="text-sm text-stone-600">
+              残り {contentLockedLength}字 / 5画像
+            </p>
+            {nftLockConditions.length >= 2 && (
               <>
-                {params.conditionLogic === "AND" ? (
+                {conditionLogic === "AND" ? (
                   <p className="text-sm text-stone-600">
                     以下の条件を全て満たす場合にのみコンテンツが閲覧可能です。
                   </p>

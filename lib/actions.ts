@@ -259,6 +259,7 @@ export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
 // creating a separate function for this because we're not using FormData
 export const updatePost = async (data: Post) => {
   const session = await getSession();
+  console.log(session, "session");
   if (!session?.user.id) {
     return {
       error: "Not authenticated",
@@ -287,9 +288,9 @@ export const updatePost = async (data: Post) => {
         description: data.description,
         content: data.content,
         contentLocked: data.contentLocked,
+        contentLockedLength: data.contentLocked?.length,
       },
     });
-
     await revalidateTag(
       `${post.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-posts`,
     );

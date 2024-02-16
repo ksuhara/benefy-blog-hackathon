@@ -164,6 +164,7 @@ export default async function SitePostPage({
               conditionLogic: data.conditionLogic,
               domain: domain,
               slug: slug,
+              contentLockedLength: data.contentLockedLength,
             }}
           />
         </>

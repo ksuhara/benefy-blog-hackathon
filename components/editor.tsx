@@ -38,6 +38,14 @@ export default function Editor({ post }: { post: PostWithSite }) {
     };
   }, [data]);
 
+  const updatePostFunction = async () => {
+    startTransitionSaving(async () => {
+      await updatePost(data).then(() => {
+        toast.success("Saved your post.");
+      });
+    });
+  };
+
   return (
     <div className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
       <div className="absolute right-5 top-5 mb-5 flex items-center space-x-3">
@@ -112,25 +120,13 @@ export default function Editor({ post }: { post: PostWithSite }) {
             content: editor?.storage.markdown.getMarkdown(),
           }));
         }}
-        onDebouncedUpdate={() => {
-          if (
-            data.title === post.title &&
-            data.description === post.description &&
-            data.content === post.content
-          ) {
-            return;
-          }
-          startTransitionSaving(async () => {
-            await updatePost(data);
-          });
-        }}
         disableLocalStorage
       />
       <h3 className="mb-2 mt-16 text-lg font-semibold dark:text-stone-200">
         NFT Locked Content ↓
       </h3>
       <NovelEditor
-        className="relative block rounded-md border-2 border-teal-200 text-stone-800 dark:border-teal-800 dark:text-stone-200"
+        className="relative block rounded-md border-2 border-indigo-200 text-stone-800 dark:border-teal-800 dark:text-stone-200"
         defaultValue={post?.contentLocked || undefined}
         onUpdate={(editor) => {
           setData((prev) => ({
@@ -138,20 +134,14 @@ export default function Editor({ post }: { post: PostWithSite }) {
             contentLocked: editor?.storage.markdown.getMarkdown(),
           }));
         }}
-        onDebouncedUpdate={() => {
-          if (
-            data.title === post.title &&
-            data.description === post.description &&
-            data.contentLocked === post.contentLocked
-          ) {
-            return;
-          }
-          startTransitionSaving(async () => {
-            await updatePost(data);
-          });
-        }}
         disableLocalStorage
       />
+      <button
+        onClick={updatePostFunction}
+        className="mt-8 w-full rounded-xl bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+      >
+        Save
+      </button>
     </div>
   );
 }
