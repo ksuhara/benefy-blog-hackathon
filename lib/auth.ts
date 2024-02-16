@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 import { SiweMessage } from "siwe";
+import Stripe from "stripe";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 
@@ -99,19 +100,59 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user) {
-        token.user = user;
+        // ユーザーがサインインしている場合、DBから追加のユーザー情報を取得
+        const dbUser = await prisma.user.findUnique({
+          where: {
+            id: user.id,
+          },
+        });
+        if (dbUser) {
+          // DBから取得した情報をtokenに格納
+
+          token.user = {
+            ...(token.user as any),
+            stripeCustomerId: dbUser.stripeCustomerId,
+            isActive: dbUser.isActive,
+          };
+        }
       }
       return token;
     },
     session: async ({ session, token }) => {
+      console.log(token, "token");
       session.user = {
         ...session.user,
         // @ts-expect-error
         id: token.sub,
         // @ts-expect-error
         username: token?.user?.username || token?.user?.gh_username,
+        // @ts-expect-error
+        stripeCustomerId: token?.user?.stripeCustomerId,
+        // @ts-expect-error
+        isActive: token?.user?.isActive,
       };
       return session;
+    },
+  },
+  events: {
+    createUser: async ({ user }) => {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+        apiVersion: "2023-10-16",
+      });
+
+      await stripe.customers
+        .create({
+          email: user.email!,
+          name: user.name!,
+        })
+        .then(async (customer) => {
+          return prisma.user.update({
+            where: { id: user.id },
+            data: {
+              stripeCustomerId: customer.id,
+            },
+          });
+        });
     },
   },
 };
@@ -124,6 +165,8 @@ export function getSession() {
       username: string;
       email: string;
       image: string;
+      isActive: boolean;
+      stripeCustomerId: string;
     };
   } | null>;
 }

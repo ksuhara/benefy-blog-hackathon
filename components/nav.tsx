@@ -15,6 +15,7 @@ import {
   Settings,
   FileCode,
   Github,
+  CreditCard,
 } from "lucide-react";
 import {
   useParams,
@@ -127,6 +128,12 @@ export default function Nav({ children }: { children: ReactNode }) {
         href: "/settings",
         isActive: segments[0] === "settings",
         icon: <Settings width={18} />,
+      },
+      {
+        name: "Plans",
+        href: "/plans",
+        isActive: segments[0] === "plans",
+        icon: <CreditCard width={18} />,
       },
     ];
   }, [segments, id, siteId]);

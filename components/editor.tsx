@@ -112,8 +112,8 @@ export default function Editor({ post }: { post: PostWithSite }) {
         />
       </div>
       <NovelEditor
-        className="relative block"
-        defaultValue={post?.content || undefined}
+        className="relative block rounded-md border-2 border-pink-200 text-stone-800 dark:border-pink-800 dark:text-stone-200"
+        defaultValue={post?.content || " "}
         onUpdate={(editor) => {
           setData((prev) => ({
             ...prev,
@@ -127,7 +127,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
       </h3>
       <NovelEditor
         className="relative block rounded-md border-2 border-indigo-200 text-stone-800 dark:border-teal-800 dark:text-stone-200"
-        defaultValue={post?.contentLocked || undefined}
+        defaultValue={post?.contentLocked || " "}
         onUpdate={(editor) => {
           setData((prev) => ({
             ...prev,

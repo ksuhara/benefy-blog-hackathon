@@ -20,6 +20,8 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  stripeCustomerId String?   @unique
+  isActive      Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   accounts      Account[]

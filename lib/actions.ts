@@ -28,6 +28,20 @@ export const createSite = async (formData: FormData) => {
       error: "Not authenticated",
     };
   }
+  // userがisActiveでない場合、userが作成できるサイトは1つだけにしたい
+  // そのため、userが作成したサイトの数を数える
+  const siteCount = await prisma.site.count({
+    where: {
+      userId: session.user.id,
+    },
+  });
+  if (siteCount >= 1 && !session.user.isActive) {
+    return {
+      error:
+        "You have reached the limit of 1 site for Free plan. Please upgrade to create more sites.",
+    };
+  }
+
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const subdomain = formData.get("subdomain") as string;
@@ -241,6 +255,20 @@ export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
       error: "Not authenticated",
     };
   }
+  // userがisActiveでない場合、userが作成できる投稿は1つだけにしたい
+  // そのため、userが作成した投稿の数を数える
+  const postCount = await prisma.post.count({
+    where: {
+      userId: session.user.id,
+    },
+  });
+  if (postCount >= 1 && !session.user.isActive) {
+    return {
+      error:
+        "You have reached the limit of 1 post for Free plan. Please upgrade to create more posts.",
+    };
+  }
+
   const response = await prisma.post.create({
     data: {
       siteId: site.id,
