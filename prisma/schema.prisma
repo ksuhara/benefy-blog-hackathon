@@ -101,6 +101,8 @@ model NFTLockCondition {
   chainId         String
   contractAddress String
   collectionName  String?
+  collectionLogo  String?
+  marketUrl       String?
   postId          String
   post            Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
 

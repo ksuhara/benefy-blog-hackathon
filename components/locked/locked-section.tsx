@@ -13,6 +13,7 @@ import {
 import SignMessageButton from "./sign-message-button";
 import Link from "next/link";
 import { LockedContent } from "./locked-content";
+import BlurImage from "../blur-image";
 
 export function WalletOptions() {
   const { connectors, connect } = useConnect();
@@ -73,6 +74,8 @@ export function LockedSection({
       contractAddress: string;
       postId: string;
       collectionName: string | null;
+      collectionLogo: string | null;
+      marketUrl: string | null;
     }[];
     conditionLogic: string;
     contentLockedLength: number | null;
@@ -120,17 +123,25 @@ export function LockedSection({
             <div className="my-4">
               {params.nftLockConditions.map((condition, i) => (
                 <div key={i} className="mb-4 flex items-center justify-between">
-                  <Link
-                    href={`https://mumbai.polygonscan.com/address/${condition.contractAddress}`}
-                    target="_blank"
-                  >
-                    <span className="text-sm font-medium text-blue-800 underline">
-                      {condition.collectionName} の保有
+                  <div className="flex items-center">
+                    <img
+                      src={condition.collectionLogo || "/placeholder.png"}
+                      className="h-12 w-auto"
+                    />
+                    <Link
+                      href={`https://mumbai.polygonscan.com/address/${condition.contractAddress}`}
+                      target="_blank"
+                    >
+                      <span className="ml-2 font-medium text-blue-800 underline">
+                        {condition.collectionName}
+                      </span>
+                    </Link>
+                  </div>
+                  <Link href={`${condition.marketUrl}`}>
+                    <span className="text-lg font-semibold text-gray-900">
+                      入手ページへ
                     </span>
                   </Link>
-                  <span className="text-lg font-semibold text-gray-900">
-                    ¥500
-                  </span>
                 </div>
               ))}
             </div>

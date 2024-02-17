@@ -15,6 +15,7 @@ import {
 import { put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
+import Moralis from "moralis";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -426,8 +427,40 @@ export const updatePostNFTGateway = withPostAuth(
     }
     const conditionLogic = formData.get("conditionLogic") as string;
 
-    console.log(lockConditions, "lockConditions");
-    console.log(conditionLogic, "conditionLogic");
+    // moralisでNFTが存在するか確認する
+    if (!Moralis.Core.isStarted) {
+      await Moralis.start({
+        apiKey: process.env.MORALIS_API_KEY,
+      });
+    }
+
+    const lockConditionsWithLogo = [];
+    for (const condition of lockConditions) {
+      try {
+        const { chainId, contractAddress } = condition;
+        const response = await Moralis.EvmApi.nft.getNFTContractMetadata({
+          address: contractAddress,
+          chain: `0x${Number(chainId).toString(16)}`,
+        });
+
+        // Save the collection logo URL
+        const collectionLogo = (response?.toJSON() as any).collection_logo;
+        console.log(collectionLogo);
+
+        // Add the collection logo URL to the condition
+        lockConditionsWithLogo.push({ ...condition, collectionLogo });
+        if (!response) {
+          return {
+            error: `NFT contract not found`,
+          };
+        }
+      } catch (error) {
+        return {
+          error: `NFT contract not found`,
+        };
+      }
+    }
+
     try {
       await prisma.nFTLockCondition.deleteMany({
         where: {
@@ -438,12 +471,14 @@ export const updatePostNFTGateway = withPostAuth(
         chainId,
         contractAddress,
         collectionName,
-      } of lockConditions) {
+        collectionLogo,
+      } of lockConditionsWithLogo) {
         await prisma.nFTLockCondition.create({
           data: {
             chainId,
             contractAddress,
             collectionName,
+            collectionLogo,
             post: {
               connect: {
                 id: post.id,
@@ -462,7 +497,6 @@ export const updatePostNFTGateway = withPostAuth(
         },
       });
 
-      console.log(response, "response");
       await revalidateTag(
         `${post.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-posts`,
       );

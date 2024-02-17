@@ -14,14 +14,11 @@ import Moralis from "moralis";
 
 export async function POST(req: Request): Promise<Response> {
   let { slug } = await req.json();
-  console.log(slug, "slug");
   const session = await getSession();
-  console.log(session, "session");
   if (!session) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
   const userAddress = session.user.id;
-  console.log(userAddress, "userAddress");
 
   const data = await prisma.post.findFirst({
     where: {

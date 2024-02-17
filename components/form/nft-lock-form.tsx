@@ -175,15 +175,13 @@ export default function NFTLockForm({ data }: { data: any }) {
               )}
             </div>
           ))}
-          <div className="mt-4">
-            <button
-              type="button"
-              onClick={addLockCondition}
-              className="rounded bg-indigo-500 px-4 py-2 text-sm text-white"
-            >
-              + Add Condition
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={addLockCondition}
+            className="mt-2 w-full rounded-xl bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+          >
+            + Add Condition
+          </button>
         </div>
       </div>
 
