@@ -2,36 +2,29 @@ import Stripe from "stripe";
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_API_KEY as string, {
   apiVersion: "2023-10-16",
 });
 
-const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
-
-const webhookHandler = async (req: NextRequest) => {
+export async function POST(request: Request) {
+  const signature = request.headers.get("stripe-signature");
+  if (!signature) {
+    return NextResponse.json(
+      {
+        message: "Bad request",
+      },
+      {
+        status: 400,
+      },
+    );
+  }
   try {
-    const buf = await req.text();
-    const sig = req.headers.get("stripe-signature")!;
-
-    let event: Stripe.Event;
-
-    try {
-      event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Unknown error";
-      // On error, log and return the error message.
-      if (!(err instanceof Error)) console.log(err);
-      console.log(`❌ Error message: ${errorMessage}`);
-
-      return NextResponse.json(
-        {
-          error: {
-            message: `Webhook Error: ${errorMessage}`,
-          },
-        },
-        { status: 400 },
-      );
-    }
+    const body = await request.arrayBuffer();
+    const event = stripe.webhooks.constructEvent(
+      Buffer.from(body),
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET as string,
+    );
 
     // Return a response to acknowledge receipt of the event.
     // Getting the data we want from the event
@@ -69,17 +62,13 @@ const webhookHandler = async (req: NextRequest) => {
         break;
     }
     return NextResponse.json({ received: true });
-  } catch {
-    // If an error occurs
-    return NextResponse.json(
-      {
-        error: {
-          message: `Method Not Allowed`,
-        },
-      },
-      { status: 405 },
-    ).headers.set("Allow", "POST");
+  } catch (err) {
+    const errorMessage = `⚠️  Webhook signature verification failed. ${
+      (err as Error).message
+    }`;
+    console.log(errorMessage);
+    return new Response(errorMessage, {
+      status: 400,
+    });
   }
-};
-
-export { webhookHandler as POST };
+}
