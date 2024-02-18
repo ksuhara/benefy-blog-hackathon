@@ -94,6 +94,7 @@ export async function getPostData(domain: string, slug: string) {
                   image: true,
                   name: true,
                   gh_username: true,
+                  isActive: true,
                 },
               },
             },

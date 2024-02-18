@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import Form from "@/components/form";
 import { updatePostMetadata } from "@/lib/actions";
 import DeletePostForm from "@/components/form/delete-post-form";
+import IframeForm from "@/components/form/iframe-form";
 
 export default async function PostSettings({
   params,
@@ -18,10 +19,22 @@ export default async function PostSettings({
     where: {
       id: decodeURIComponent(params.id),
     },
+    include: {
+      site: {
+        select: {
+          subdomain: true,
+        },
+      },
+    },
   });
   if (!data || data.userId !== session.user.id) {
     notFound();
   }
+
+  const url = process.env.NEXT_PUBLIC_VERCEL_ENV
+    ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
+    : `http://${data.site?.subdomain}.localhost:8888/${data.slug}`;
+
   return (
     <div className="flex max-w-screen-xl flex-col space-y-12 p-6">
       <div className="flex flex-col space-y-6">
@@ -52,7 +65,7 @@ export default async function PostSettings({
           }}
           handleSubmit={updatePostMetadata}
         />
-
+        <IframeForm url={url} />
         <DeletePostForm postName={data?.title!} />
       </div>
     </div>

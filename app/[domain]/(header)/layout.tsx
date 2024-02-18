@@ -7,7 +7,7 @@ import { notFound, redirect } from "next/navigation";
 import { getSiteData } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
-import { WagmiProviders } from "./wagmi-providers";
+import { WagmiProviders } from "../wagmi-providers";
 
 export async function generateMetadata({
   params,
@@ -104,12 +104,12 @@ export default async function SiteLayout({
 
         <div className="mt-20">{children}</div>
 
-        {domain == `demo.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}` ||
+        {/* {domain == `demo.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}` ||
         domain == `platformize.co` ? (
           <CTA />
         ) : (
           <ReportAbuse />
-        )}
+        )} */}
       </div>
     </WagmiProviders>
   );
