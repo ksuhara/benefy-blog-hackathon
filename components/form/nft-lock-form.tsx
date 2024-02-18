@@ -16,7 +16,7 @@ export default function NFTLockForm({ data }: { data: any }) {
   const { update } = useSession();
 
   const [lockConditions, setLockConditions] = useState(
-    data?.nftLockConditions || [],
+    data?.nftLockConditions || [{ chainId: "1", contractAddress: "" }],
   );
   const [conditionLogic, setConditionLogic] = useState(
     data.conditionLogic || "AND",
@@ -67,10 +67,17 @@ export default function NFTLockForm({ data }: { data: any }) {
     setLockConditions(newConditions);
   };
 
+  const handleChangeMarketUrl = (index: number, value: string) => {
+    const newConditions = [...lockConditions];
+    newConditions[index].marketUrl = value;
+    newConditions[index].error = ""; // エラーをクリア
+
+    setLockConditions(newConditions);
+  };
+
   return (
     <form
       action={async (data: FormData) => {
-        console.log(lockConditions, "lockConditions");
         const formData = new FormData();
         formData.append("lockConditions", JSON.stringify(lockConditions));
         formData.append("conditionLogic", conditionLogic);
@@ -98,13 +105,13 @@ export default function NFTLockForm({ data }: { data: any }) {
     >
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
         <h2 className="font-cal text-xl dark:text-white">
-          NFT Lock Conditions
+          NFTロックの条件設定
         </h2>
         <p className="text-sm text-stone-500 dark:text-stone-400">
-          Users can only view your post if they own the NFTs you specify here.
+          ユーザーは、ここで指定したNFTを所有している場合にのみ、あなたの投稿の限定部分を閲覧できます。
         </p>
-        <label className="text-stone-900 dark:text-white">
-          Condition Logic
+        <label className="text-sm font-semibold text-stone-900 dark:text-white">
+          条件のロジック
         </label>
         <select
           name="conditionLogic"
@@ -123,52 +130,80 @@ export default function NFTLockForm({ data }: { data: any }) {
               key={index}
               className="space-y-2 rounded bg-stone-100 p-4 dark:bg-stone-900"
             >
-              <div className="flex max-w-sm items-center overflow-hidden rounded-lg border border-stone-300 ">
-                <select
-                  name={`chain-${index}`}
-                  value={condition.chainId}
-                  onChange={(e) => {
-                    const newConditions = [...lockConditions];
-                    newConditions[index].chainId = e.target.value;
-                    setLockConditions(newConditions);
-                  }}
-                  className="w-full rounded-none border-none bg-white px-4 py-2 text-sm font-medium text-stone-700 focus:outline-none focus:ring-black dark:bg-black dark:text-stone-200 dark:focus:ring-white"
-                >
-                  <option value="1">Ethereum</option>
-                  <option value="137">Polygon</option>
-                  <option value="80001">Mumbai</option>
-                  <option value="111111">Base</option>
-                </select>
+              <div className="flex items-center justify-between">
+                <label className="mr-2 text-sm font-semibold">チェーン</label>
+                <div className="flex w-full max-w-md items-center overflow-hidden rounded-lg border border-stone-300 ">
+                  <select
+                    name={`chain-${index}`}
+                    value={condition.chainId}
+                    onChange={(e) => {
+                      const newConditions = [...lockConditions];
+                      newConditions[index].chainId = e.target.value;
+                      setLockConditions(newConditions);
+                    }}
+                    className="w-full rounded-none border-none bg-white px-4 py-2 text-sm font-medium text-stone-700 focus:outline-none focus:ring-black dark:bg-black dark:text-stone-200 dark:focus:ring-white"
+                  >
+                    <option value="1">Ethereum</option>
+                    <option value="137">Polygon</option>
+                    <option value="80001">Mumbai</option>
+                    <option value="111111">Base</option>
+                  </select>
+                </div>
               </div>
-              <input
-                name={`nftContractAddress-${index}`}
-                value={condition.contractAddress}
-                onChange={(e) =>
-                  handleChangeContractAddress(index, e.target.value)
-                }
-                required
-                placeholder="0x1234..."
-                className="mt-2 w-full max-w-md rounded-md border border-stone-300 px-4 py-2 text-sm text-stone-900 placeholder-stone-300 focus:border-stone-500 focus:outline-none focus:ring-stone-500 dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700"
-              />
-              <input
-                name={`collection-${index}`}
-                value={condition.collectionName}
-                onChange={(e) =>
-                  handleChangeCollectionName(index, e.target.value)
-                }
-                required
-                placeholder="ex) Bored Ape Yacht Club"
-                className="mt-2 w-full max-w-md rounded-md border border-stone-300 px-4 py-2 text-sm text-stone-900 placeholder-stone-300 focus:border-stone-500 focus:outline-none focus:ring-stone-500 dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700"
-              />
+              <div className="flex w-full items-center justify-between">
+                <label className="mr-2 text-sm font-semibold">
+                  コントラクトアドレス
+                </label>
+                <input
+                  name={`nftContractAddress-${index}`}
+                  value={condition.contractAddress}
+                  onChange={(e) =>
+                    handleChangeContractAddress(index, e.target.value)
+                  }
+                  required
+                  placeholder="0x1234..."
+                  className="w-full max-w-md rounded-md border border-stone-300 px-4 py-2 text-sm text-stone-900 placeholder-stone-300 focus:border-stone-500 focus:outline-none focus:ring-stone-500 dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700"
+                />
+              </div>
+              <div className="flex w-full items-center justify-between">
+                <label className="mr-2 text-sm font-semibold">
+                  NFTコレクション名など
+                </label>
+                <input
+                  name={`collection-${index}`}
+                  value={condition.collectionName}
+                  onChange={(e) =>
+                    handleChangeCollectionName(index, e.target.value)
+                  }
+                  required
+                  placeholder="ex) Bored Ape Yacht Club"
+                  className="w-full max-w-md rounded-md border border-stone-300 px-4 py-2 text-sm text-stone-900 placeholder-stone-300 focus:border-stone-500 focus:outline-none focus:ring-stone-500 dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700"
+                />
+              </div>
+              <div className="flex w-full items-center justify-between">
+                <label className="mr-2 text-sm font-semibold">
+                  販売ページURL
+                </label>
+                <input
+                  name={`marketUrl-${index}`}
+                  value={condition.maketUrl}
+                  onChange={(e) => handleChangeMarketUrl(index, e.target.value)}
+                  required
+                  placeholder="https://opensea.io/...."
+                  className="w-full max-w-md rounded-md border border-stone-300 px-4 py-2 text-sm text-stone-900 placeholder-stone-300 focus:border-stone-500 focus:outline-none focus:ring-stone-500 dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700"
+                />
+              </div>
 
               {lockConditions.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeLockCondition(index)}
-                  className="ml-4 rounded bg-red-500 px-4 py-2 text-sm text-white"
-                >
-                  Remove
-                </button>
+                <div className=" flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => removeLockCondition(index)}
+                    className="rounded bg-red-500 px-4 py-2 text-sm text-white"
+                  >
+                    削除する
+                  </button>
+                </div>
               )}
               {condition.error && (
                 <p className="mt-1 text-xs text-red-500">{condition.error}</p>
@@ -180,14 +215,14 @@ export default function NFTLockForm({ data }: { data: any }) {
             onClick={addLockCondition}
             className="mt-2 w-full rounded-xl bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
           >
-            + Add Condition
+            + 条件を追加する
           </button>
         </div>
       </div>
 
       <div className="flex flex-col items-center justify-center space-y-2 rounded-b-lg border-t border-stone-200 bg-stone-50 p-3 dark:border-stone-700 dark:bg-stone-800 sm:flex-row sm:justify-between sm:space-y-0 sm:px-10">
         <p className="text-center text-sm text-stone-500 dark:text-stone-400">
-          Supports both ERC721 and ERC1155.
+          ERC721 と ERC1155 に対応しています
         </p>
         <div className="w-32">
           <FormButton />
@@ -209,7 +244,7 @@ function FormButton() {
       )}
       disabled={pending}
     >
-      {pending ? <LoadingDots color="#808080" /> : <p>Save Changes</p>}
+      {pending ? <LoadingDots color="#808080" /> : <p>変更を保存する</p>}
     </button>
   );
 }

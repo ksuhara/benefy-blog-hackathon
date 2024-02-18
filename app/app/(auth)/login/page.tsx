@@ -10,21 +10,10 @@ export default function LoginPage() {
         width={100}
         height={100}
         className="relative mx-auto h-12 w-auto dark:scale-110 dark:rounded-full dark:border dark:border-stone-400"
-        src="/logo.png"
+        src="/benefy-square.png"
       />
-      <h1 className="mt-6 text-center font-cal text-3xl dark:text-white">
-        Platforms Starter Kit
-      </h1>
-      <p className="mt-2 text-center text-sm text-stone-600 dark:text-stone-400">
-        Build multi-tenant applications with custom domains. <br />
-        <a
-          className="font-medium text-black hover:text-stone-800 dark:text-stone-300 dark:hover:text-stone-100"
-          href="https://vercel.com/blog/platforms-starter-kit"
-          rel="noreferrer"
-          target="_blank"
-        >
-          Read the announcement.
-        </a>
+      <p className="mt-6 text-center text-sm text-stone-600 dark:text-stone-400">
+        お好きな方法でログインしてください
       </p>
 
       <div className="mx-auto mt-4 w-11/12 max-w-xs sm:w-full">

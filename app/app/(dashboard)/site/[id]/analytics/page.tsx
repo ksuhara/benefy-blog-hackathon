@@ -30,6 +30,7 @@ export default async function SiteAnalytics({
           <h1 className="font-cal text-xl font-bold dark:text-white sm:text-3xl">
             Analytics for {data.name}
           </h1>
+
           <a
             href={`https://${url}`}
             target="_blank"
@@ -40,6 +41,10 @@ export default async function SiteAnalytics({
           </a>
         </div>
       </div>
+      <p className="font-semibold">
+        ※この機能は準備中です。以下のデータはダミーですのでご注意ください。
+      </p>
+
       <AnalyticsMockup />
     </>
   );

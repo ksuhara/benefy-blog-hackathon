@@ -16,9 +16,9 @@ export default async function SiteSettingsAppearance({
   return (
     <div className="flex flex-col space-y-6">
       <Form
-        title="Thumbnail image"
-        description="The thumbnail image for your site. Accepted formats: .png, .jpg, .jpeg"
-        helpText="Max file size 50MB. Recommended size 1200x630."
+        title="サムネイル画像"
+        description="サイトのサムネイル画像です。受け入れ可能なフォーマット: .png、.jpg、.jpeg"
+        helpText="最大ファイルサイズは50MBです。推奨サイズは1200x630です。"
         inputAttrs={{
           name: "image",
           type: "file",
@@ -28,8 +28,8 @@ export default async function SiteSettingsAppearance({
       />
       <Form
         title="Logo"
-        description="The logo for your site. Accepted formats: .png, .jpg, .jpeg"
-        helpText="Max file size 50MB. Recommended size 400x400."
+        description="サイトのロゴ画像です。 受け入れ可能なフォーマット: .png、.jpg、.jpeg"
+        helpText="最大ファイルサイズは50MBです。推奨サイズは400x400です。"
         inputAttrs={{
           name: "logo",
           type: "file",
@@ -39,7 +39,7 @@ export default async function SiteSettingsAppearance({
       />
       <Form
         title="Font"
-        description="The font for the heading text your site."
+        description="サイトの見出しテキスト用のフォントです。"
         helpText="Please select a font."
         inputAttrs={{
           name: "font",
@@ -50,13 +50,13 @@ export default async function SiteSettingsAppearance({
       />
       <Form
         title="404 Page Message"
-        description="Message to be displayed on the 404 page."
-        helpText="Please use 240 characters maximum."
+        description="404ページに表示されるメッセージです。"
+        helpText="最大240文字以内で使用してください。"
         inputAttrs={{
           name: "message404",
           type: "text",
           defaultValue: data?.message404!,
-          placeholder: "Blimey! You've found a page that doesn't exist.",
+          placeholder: "おや！ 存在しないページを見つけてしまいました。",
           maxLength: 240,
         }}
         handleSubmit={updateSite}

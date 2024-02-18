@@ -39,12 +39,12 @@ export default async function PostSettings({
     <div className="flex max-w-screen-xl flex-col space-y-12 p-6">
       <div className="flex flex-col space-y-6">
         <h1 className="font-cal text-3xl font-bold dark:text-white">
-          Post Settings
+          記事設定
         </h1>
         <Form
-          title="Post Slug"
-          description="The slug is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens."
-          helpText="Please use a slug that is unique to this post."
+          title="記事のスラッグ"
+          description="スラッグは、名前のURLに適したバージョンです。通常、すべて小文字で、文字、数字、ハイフンのみを含みます。"
+          helpText="この記事に固有のスラッグを使用してください。"
           inputAttrs={{
             name: "slug",
             type: "text",
@@ -55,9 +55,9 @@ export default async function PostSettings({
         />
 
         <Form
-          title="Thumbnail image"
-          description="The thumbnail image for your post. Accepted formats: .png, .jpg, .jpeg"
-          helpText="Max file size 50MB. Recommended size 1200x630."
+          title="サムネイル画像"
+          description="記事のサムネイル画像です。受け入れ可能なフォーマット: .png、.jpg、.jpeg"
+          helpText="最大ファイルサイズは50MBです。推奨サイズは1200x630です。"
           inputAttrs={{
             name: "image",
             type: "file",

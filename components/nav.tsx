@@ -60,24 +60,24 @@ export default function Nav({ children }: { children: ReactNode }) {
     if (segments[0] === "site" && id) {
       return [
         {
-          name: "Back to All Sites",
+          name: "サイト一覧に戻る",
           href: "/sites",
           icon: <ArrowLeft width={18} />,
         },
         {
-          name: "Posts",
+          name: "記事一覧",
           href: `/site/${id}`,
           isActive: segments.length === 2,
           icon: <Newspaper width={18} />,
         },
         {
-          name: "Analytics",
+          name: "分析（準備中）",
           href: `/site/${id}/analytics`,
           isActive: segments.includes("analytics"),
           icon: <BarChart3 width={18} />,
         },
         {
-          name: "Settings",
+          name: "サイト設定",
           href: `/site/${id}/settings`,
           isActive: segments.includes("settings"),
           icon: <Settings width={18} />,
@@ -86,24 +86,24 @@ export default function Nav({ children }: { children: ReactNode }) {
     } else if (segments[0] === "post" && id) {
       return [
         {
-          name: "Back to All Posts",
+          name: "記事一覧に戻る",
           href: siteId ? `/site/${siteId}` : "/sites",
           icon: <ArrowLeft width={18} />,
         },
         {
-          name: "Editor",
+          name: "記事編集",
           href: `/post/${id}`,
           isActive: segments.length === 2,
           icon: <Edit3 width={18} />,
         },
         {
-          name: "NFT Lock",
+          name: "NFTロック",
           href: `/post/${id}/nft-settings`,
           isActive: segments.includes("nft-settings"),
           icon: <Lock width={18} />,
         },
         {
-          name: "Settings",
+          name: "記事設定",
           href: `/post/${id}/settings`,
           isActive: segments.includes("settings"),
           icon: <Settings width={18} />,
@@ -118,19 +118,19 @@ export default function Nav({ children }: { children: ReactNode }) {
         icon: <LayoutDashboard width={18} />,
       },
       {
-        name: "Sites",
+        name: "サイト一覧",
         href: "/sites",
         isActive: segments[0] === "sites",
         icon: <Globe width={18} />,
       },
       {
-        name: "Settings",
+        name: "ユーザー設定",
         href: "/settings",
         isActive: segments[0] === "settings",
         icon: <Settings width={18} />,
       },
       {
-        name: "Plans",
+        name: "プラン",
         href: "/plans",
         isActive: segments[0] === "plans",
         icon: <CreditCard width={18} />,
@@ -167,32 +167,12 @@ export default function Nav({ children }: { children: ReactNode }) {
       >
         <div className="grid gap-2">
           <div className="flex items-center space-x-2 rounded-lg px-2 py-1.5">
-            <a
-              href="https://vercel.com/templates/next.js/platforms-starter-kit"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg p-1.5 hover:bg-stone-200 dark:hover:bg-stone-700"
-            >
-              <svg
-                width="26"
-                viewBox="0 0 76 65"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-black dark:text-white"
-              >
-                <path
-                  d="M37.5274 0L75.0548 65H0L37.5274 0Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </a>
-            <div className="h-6 rotate-[30deg] border-l border-stone-400 dark:border-stone-500" />
             <Link
               href="/"
               className="rounded-lg p-2 hover:bg-stone-200 dark:hover:bg-stone-700"
             >
               <Image
-                src="/logo.png"
+                src="/benefy-square.png"
                 width={24}
                 height={24}
                 alt="Logo"

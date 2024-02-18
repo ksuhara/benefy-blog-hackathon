@@ -17,9 +17,9 @@ export default async function SiteSettingsIndex({
   return (
     <div className="flex flex-col space-y-6">
       <Form
-        title="Name"
-        description="The name of your site. This will be used as the meta title on Google as well."
-        helpText="Please use 32 characters maximum."
+        title="サイト名"
+        description="サイトの名前です。これはGoogleのメタタイトルとしても使用されます。"
+        helpText="最大32文字以内で入力してください。"
         inputAttrs={{
           name: "name",
           type: "text",
@@ -32,8 +32,8 @@ export default async function SiteSettingsIndex({
 
       <Form
         title="Description"
-        description="The description of your site. This will be used as the meta description on Google as well."
-        helpText="Include SEO-optimized keywords that you want to rank for."
+        description="サイトの説明です。これはGoogleのメタディスクリプションとしても使用されます。"
+        helpText="ランクインさせたいSEO最適化されたキーワードを含めてください。"
         inputAttrs={{
           name: "description",
           type: "text",

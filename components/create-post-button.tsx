@@ -40,7 +40,7 @@ export default function CreatePostButton() {
       )}
       disabled={isPending}
     >
-      {isPending ? <LoadingDots color="#808080" /> : <p>Create New Post</p>}
+      {isPending ? <LoadingDots color="#808080" /> : <p>新しい記事を作る</p>}
     </button>
   );
 }

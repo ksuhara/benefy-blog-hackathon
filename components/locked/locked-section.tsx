@@ -122,11 +122,14 @@ export function LockedSection({
             {/* <!-- Price display --> */}
             <div className="my-4">
               {params.nftLockConditions.map((condition, i) => (
-                <div key={i} className="mb-4 flex items-center justify-between">
-                  <div className="flex items-center">
+                <div
+                  key={i}
+                  className="mb-4 items-center justify-between sm:flex "
+                >
+                  <div className="sm:flex sm:items-center">
                     <img
                       src={condition.collectionLogo || "/placeholder.png"}
-                      className="h-12 w-auto"
+                      className="mx-auto h-12 w-auto "
                     />
                     <Link
                       href={`https://mumbai.polygonscan.com/address/${condition.contractAddress}`}

@@ -19,6 +19,7 @@ module.exports = {
       { hostname: "flag.vercel.app" },
       { hostname: "illustrations.popsy.co" },
       { hostname: "lh3.googleusercontent.com" },
+      { hostname: "bspnmiwdeseecvgt.public.blob.vercel-storage.com" },
     ],
   },
 };

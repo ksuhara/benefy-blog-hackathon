@@ -41,7 +41,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
   const updatePostFunction = async () => {
     startTransitionSaving(async () => {
       await updatePost(data).then(() => {
-        toast.success("Saved your post.");
+        toast.success("保存しました。");
       });
     });
   };
@@ -71,9 +71,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
               await updatePostMetadata(formData, post.id, "published").then(
                 () => {
                   toast.success(
-                    `Successfully ${
-                      data.published ? "unpublished" : "published"
-                    } your post.`,
+                    `投稿を ${data.published ? "非公開に" : "公開"} しました🎉`,
                   );
                   setData((prev) => ({ ...prev, published: !prev.published }));
                 },
@@ -91,7 +89,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
           {isPendingPublishing ? (
             <LoadingDots />
           ) : (
-            <p>{data.published ? "Unpublish" : "Publish"}</p>
+            <p>{data.published ? "非公開にする" : "公開する"}</p>
           )}
         </button>
       </div>
@@ -140,7 +138,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
         onClick={updatePostFunction}
         className="mt-8 w-full rounded-xl bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
       >
-        Save
+        保存する
       </button>
     </div>
   );

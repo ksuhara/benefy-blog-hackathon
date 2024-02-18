@@ -10,17 +10,17 @@ export default function SiteSettingsNav() {
 
   const navItems = [
     {
-      name: "General",
+      name: "一般",
       href: `/site/${id}/settings`,
       segment: null,
     },
     {
-      name: "Domains",
+      name: "ドメイン",
       href: `/site/${id}/settings/domains`,
       segment: "domains",
     },
     {
-      name: "Appearance",
+      name: "外観・デザイン",
       href: `/site/${id}/settings/appearance`,
       segment: "appearance",
     },

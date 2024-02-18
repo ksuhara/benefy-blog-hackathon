@@ -2,15 +2,15 @@
 
 import LoadingDots from "@/components/icons/loading-dots";
 import { cn } from "@/lib/utils";
-import { useParams, useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import { deleteSite } from "@/lib/actions";
-import va from "@vercel/analytics";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function IframeForm({ url }: { url: string }) {
-  const [width, setWidth] = useState(1024);
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+  const [width, setWidth] = useState(isMobile ? 400 : 1024);
   const [height, setHeight] = useState(400);
 
   function FormButton() {
@@ -28,21 +28,21 @@ export default function IframeForm({ url }: { url: string }) {
           width="${width}"
           height="${height}"
           src="${url}/embedded"></iframe>`);
-          alert("Copied to clipboard");
+          toast.success("コピーしました");
         }}
         disabled={pending}
       >
-        {pending ? <LoadingDots color="#808080" /> : <p>Copy</p>}
+        {pending ? <LoadingDots color="#808080" /> : <p>コピーする</p>}
       </button>
     );
   }
 
   return (
-    <form className="rounded-lg border border-indigo-600 bg-white dark:bg-black">
+    <div className="rounded-lg border border-indigo-600 bg-white dark:bg-black">
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
-        <h2 className="font-cal text-xl dark:text-white">Iframe Form</h2>
+        <h2 className="font-cal text-xl dark:text-white">Iframe設定</h2>
         <p className="text-sm text-stone-500 dark:text-stone-400">
-          Deletes your site and all posts associated with it. Type in the name
+          IframeでNFT限定部分をご自身のサイトに埋め込むことができます。有料ユーザー限定機能です。
         </p>
         <div className="flex items-center">
           <label className="mr-4 text-sm">width</label>
@@ -76,7 +76,7 @@ export default function IframeForm({ url }: { url: string }) {
             </div>
           )}
         </div>
-        <p className="text-sm font-semibold">preview</p>
+        <p className="text-sm font-semibold">プレビュー</p>
         <div className="border text-center">
           <iframe
             width={width}
@@ -88,12 +88,18 @@ export default function IframeForm({ url }: { url: string }) {
 
       <div className="flex flex-col items-center justify-center space-y-2 rounded-b-lg border-t border-stone-200 bg-stone-50 p-3 dark:border-stone-700 dark:bg-stone-800 sm:flex-row sm:justify-between sm:space-y-0 sm:px-10">
         <p className="text-center text-sm text-stone-500 dark:text-stone-400">
-          This action is irreversible. Please proceed with caution.
+          iframe埋め込み機能を利用するためには、
+          <Link href="/plans">
+            <span className="underline">
+              記事投稿者が有料ユーザーである必要があります
+            </span>
+          </Link>
+          。
         </p>
         <div className="w-32">
           <FormButton />
         </div>
       </div>
-    </form>
+    </div>
   );
 }

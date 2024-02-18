@@ -127,6 +127,10 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+const url = process.env.NEXT_PUBLIC_VERCEL_ENV
+  ? `https://app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
+  : `http://app.localhost:8888`;
+
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -139,13 +143,9 @@ export default function Example() {
           aria-label="Global"
         >
           <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                alt=""
-              />
+            <a href="/" className="-m-1.5 p-1.5">
+              <span className="sr-only">Benefy Blog</span>
+              <img className="h-8 w-auto" src="/benefy-square.png" alt="" />
             </a>
           </div>
           <div className="flex lg:hidden">
@@ -170,7 +170,10 @@ export default function Example() {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="#" className="text-sm font-semibold leading-6 text-white">
+            <a
+              href={url}
+              className="text-sm font-semibold leading-6 text-white"
+            >
               Log in <span aria-hidden="true">&rarr;</span>
             </a>
           </div>
@@ -260,18 +263,15 @@ export default function Example() {
                 </div>
               </div> */}
               <div className="text-center">
-                <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-                  Unlock Exclusive Content with Benefy Blog
+                <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-6xl">
+                  Benefy Blog
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-300">
-                  The revolutionary platform that transforms the way content
-                  creators and NFT holders connect. Just like crafting blogs on
-                  note, but with a twist: exclusive access. Only NFT owners can
-                  unlock and view unique content.
+                  NFT認証機能付きのブログを簡単に作成！NFTのCMSです。
                 </p>
                 <div className="mt-10 flex items-center justify-center gap-x-6">
                   <Link
-                    href="http://app.localhost:8888/"
+                    href={url}
                     className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
                   >
                     Get started

@@ -17,9 +17,9 @@ export default async function SettingsPage() {
           Settings
         </h1>
         <Form
-          title="Name"
-          description="Your name on this app."
-          helpText="Please use 32 characters maximum."
+          title="ユーザー名"
+          description="サイト上で表示されるあなたのユーザー名です。"
+          helpText="最大32文字以内で入力してください。"
           inputAttrs={{
             name: "name",
             type: "text",
@@ -31,8 +31,8 @@ export default async function SettingsPage() {
         />
         <Form
           title="Email"
-          description="Your email on this app."
-          helpText="Please enter a valid email."
+          description="このemailは一般には公開されません。"
+          helpText="有効なemailアドレスを入力してください。"
           inputAttrs={{
             name: "email",
             type: "email",

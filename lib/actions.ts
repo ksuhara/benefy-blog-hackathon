@@ -263,10 +263,10 @@ export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
       userId: session.user.id,
     },
   });
-  if (postCount >= 1 && !session.user.isActive) {
+  if (postCount >= 3 && !session.user.isActive) {
     return {
       error:
-        "You have reached the limit of 1 post for Free plan. Please upgrade to create more posts.",
+        "無料プランの投稿制限3件に達しました。さらに投稿を作成するには、プランをアップグレードしてください。",
     };
   }
 
@@ -398,7 +398,7 @@ export const updatePostMetadata = withPostAuth(
     } catch (error: any) {
       if (error.code === "P2002") {
         return {
-          error: `This slug is already in use`,
+          error: `このスラッグは既に使われています`,
         };
       } else {
         return {
