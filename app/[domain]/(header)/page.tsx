@@ -54,17 +54,19 @@ export default async function SiteHomePage({
         {posts.length > 0 ? (
           <div className="mx-auto w-full max-w-screen-xl md:mb-28 lg:w-5/6">
             <Link href={`/${posts[0].slug}`}>
-              <div className="group relative mx-auto h-80 w-full overflow-hidden sm:h-150 lg:rounded-xl">
-                <BlurImage
-                  alt={posts[0].title ?? ""}
-                  blurDataURL={posts[0].imageBlurhash ?? placeholderBlurhash}
-                  className="h-full w-full object-cover group-hover:scale-105 group-hover:duration-300"
-                  width={1300}
-                  height={630}
-                  placeholder="blur"
-                  src={posts[0].image ?? "/placeholder.png"}
-                />
-              </div>
+              {posts[0].image && (
+                <div className="group relative mx-auto h-80 w-full overflow-hidden sm:h-150 lg:rounded-xl">
+                  <BlurImage
+                    alt={posts[0].title ?? ""}
+                    blurDataURL={posts[0].imageBlurhash ?? placeholderBlurhash}
+                    className="h-full w-full object-cover group-hover:scale-105 group-hover:duration-300"
+                    width={1300}
+                    height={630}
+                    placeholder="blur"
+                    src={posts[0].image ?? "/placeholder.png"}
+                  />
+                </div>
+              )}
               <div className="mx-auto mt-10 w-5/6 lg:w-full">
                 <h2 className="my-10 font-title text-4xl dark:text-white md:text-6xl">
                   {posts[0].title}

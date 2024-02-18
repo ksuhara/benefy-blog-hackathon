@@ -36,7 +36,7 @@ export default function SignMessageButton() {
 
   return (
     <button
-      className="mx-2 mt-2 w-full rounded-xl bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+      className="mt-4 w-full rounded-xl bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
       onClick={(e) => {
         e.preventDefault();
         handleLogin();

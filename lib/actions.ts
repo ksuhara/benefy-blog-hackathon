@@ -269,6 +269,12 @@ export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
         "無料プランの投稿制限3件に達しました。さらに投稿を作成するには、プランをアップグレードしてください。",
     };
   }
+  if (postCount >= 100) {
+    return {
+      error:
+        "スタンダードプランの投稿制限100件に達しました。さらに投稿を作成するには、運営にお問合せの上アップグレードしてください。",
+    };
+  }
 
   const response = await prisma.post.create({
     data: {
@@ -472,6 +478,7 @@ export const updatePostNFTGateway = withPostAuth(
         contractAddress,
         collectionName,
         collectionLogo,
+        marketUrl,
       } of lockConditionsWithLogo) {
         await prisma.nFTLockCondition.create({
           data: {
@@ -479,6 +486,7 @@ export const updatePostNFTGateway = withPostAuth(
             contractAddress,
             collectionName,
             collectionLogo,
+            marketUrl,
             post: {
               connect: {
                 id: post.id,

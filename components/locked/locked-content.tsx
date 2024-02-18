@@ -3,6 +3,7 @@
 import MDX from "@/components/mdx";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 export function LockedContent({
   params,
@@ -15,7 +16,7 @@ export function LockedContent({
     console.log(params, "params");
     if (!params.domain) return;
     if (!session) return;
-    fetchContent();
+    // fetchContent();
   }, [session]);
 
   const fetchContent = async () => {
@@ -36,7 +37,9 @@ export function LockedContent({
       console.log(fetchedLockedData, "lockedData");
       setLockedData(fetchedLockedData);
     } else {
-      window.alert("Failed to fetch locked content. Please check your wallet.");
+      toast.error(
+        "NFTの認証に失敗しました。ウォレットが正しいか確認してください。",
+      );
       setLockedData(null);
     }
   };

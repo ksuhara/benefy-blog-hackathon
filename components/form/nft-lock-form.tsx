@@ -26,7 +26,7 @@ export default function NFTLockForm({ data }: { data: any }) {
   const addLockCondition = () => {
     //上限を3つに設定したい
     if (lockConditions.length >= 3) {
-      alert("You can only add up to 3 lock conditions.");
+      alert("最大3つまでロック条件を追加できます。");
       return;
     }
 
@@ -186,7 +186,7 @@ export default function NFTLockForm({ data }: { data: any }) {
                 </label>
                 <input
                   name={`marketUrl-${index}`}
-                  value={condition.maketUrl}
+                  value={condition.marketUrl}
                   onChange={(e) => handleChangeMarketUrl(index, e.target.value)}
                   required
                   placeholder="https://opensea.io/...."

@@ -56,7 +56,7 @@ export default function CreateSiteModal() {
             htmlFor="name"
             className="text-sm font-medium text-stone-500 dark:text-stone-400"
           >
-            Site Name
+            サイト名
           </label>
           <input
             name="name"
@@ -76,7 +76,7 @@ export default function CreateSiteModal() {
             htmlFor="subdomain"
             className="text-sm font-medium text-stone-500"
           >
-            Subdomain
+            サブドメイン
           </label>
           <div className="flex w-full max-w-md">
             <input
@@ -102,7 +102,7 @@ export default function CreateSiteModal() {
             htmlFor="description"
             className="text-sm font-medium text-stone-500"
           >
-            Description
+            ディスクリプション
           </label>
           <textarea
             name="description"
@@ -133,7 +133,7 @@ function CreateSiteFormButton() {
       )}
       disabled={pending}
     >
-      {pending ? <LoadingDots color="#808080" /> : <p>Create Site</p>}
+      {pending ? <LoadingDots color="#808080" /> : <p>サイトを作る</p>}
     </button>
   );
 }

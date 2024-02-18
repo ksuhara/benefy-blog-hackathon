@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
+import { cn } from "@/lib/utils";
 
 import {
   Connector,
@@ -18,7 +19,7 @@ import BlurImage from "../blur-image";
 export function WalletOptions() {
   const { connectors, connect } = useConnect();
   return (
-    <div className="mt-8 flex">
+    <div className="mt-8 grid gap-2 sm:grid sm:grid-cols-2">
       {connectors[0] && (
         <WalletOption
           connector={connectors[0]}
@@ -55,9 +56,14 @@ function WalletOption({
     <button
       disabled={!ready}
       onClick={onClick}
-      className="mx-2 w-full rounded-xl bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+      className={cn(
+        "w-full rounded-xl px-4 py-2 text-white ",
+        connector.name === "Injected"
+          ? "bg-orange-500 hover:bg-orange-600"
+          : "bg-blue-400 hover:bg-blue-500",
+      )}
     >
-      {connector.name} で接続
+      {connector.name === "Injected" ? "Metamask" : connector.name} で接続
     </button>
   );
 }
@@ -101,16 +107,16 @@ export function LockedSection({
           <div className="border-b border-dashed border-stone-300 p-5">
             <h1 className="text-lg font-semibold">続きをみるには</h1>
             <p className="text-sm text-stone-600">
-              残り {contentLockedLength}字 / 5画像
+              残り {contentLockedLength || 0}字 / 5画像
             </p>
             {nftLockConditions.length >= 2 && (
               <>
                 {conditionLogic === "AND" ? (
-                  <p className="text-sm text-stone-600">
+                  <p className="mt-2 text-sm text-stone-600">
                     以下の条件を全て満たす場合にのみコンテンツが閲覧可能です。
                   </p>
                 ) : (
-                  <p className="text-sm text-stone-600">
+                  <p className="mt-2 text-sm text-stone-600">
                     以下の条件のいずれかを満たす場合にコンテンツが閲覧可能です。
                   </p>
                 )}
@@ -124,24 +130,19 @@ export function LockedSection({
               {params.nftLockConditions.map((condition, i) => (
                 <div
                   key={i}
-                  className="mb-4 items-center justify-between sm:flex "
+                  className="mx-4 mb-4 items-center justify-between sm:flex "
                 >
                   <div className="sm:flex sm:items-center">
                     <img
                       src={condition.collectionLogo || "/placeholder.png"}
                       className="mx-auto h-12 w-auto "
                     />
-                    <Link
-                      href={`https://mumbai.polygonscan.com/address/${condition.contractAddress}`}
-                      target="_blank"
-                    >
-                      <span className="ml-2 font-medium text-blue-800 underline">
-                        {condition.collectionName}
-                      </span>
-                    </Link>
+                    <span className="ml-2 font-medium text-stone-800">
+                      {condition.collectionName}
+                    </span>
                   </div>
-                  <Link href={`${condition.marketUrl}`}>
-                    <span className="text-lg font-semibold text-gray-900">
+                  <Link href={condition.marketUrl || ""} target="_blank">
+                    <span className="text-lg font-semibold text-blue-800 underline">
                       入手ページへ
                     </span>
                   </Link>
@@ -149,10 +150,6 @@ export function LockedSection({
               ))}
             </div>
 
-            {/* <!-- Main action button --> */}
-            {/* <button className="w-full rounded bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-green-600">
-              購入手続きへ
-            </button> */}
             {isConnected ? (
               <>
                 <Account />
@@ -187,14 +184,14 @@ export function Account() {
   const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="mx-2 my-2 flex items-center justify-between">
       {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />}
       {address && (
         <div>
           Connected:{" "}
           {ensName
-            ? `${ensName} (${address})`
-            : address?.substring(0, 12) + "..."}
+            ? `${ensName} (${address.substring(0, 12) + "..."})`
+            : address.substring(0, 12) + "..."}
         </div>
       )}
       <button

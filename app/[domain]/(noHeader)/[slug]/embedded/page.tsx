@@ -16,6 +16,14 @@ export default async function SitePostPage({
   }
 
   console.log(data, "data");
+  const imageRegex: RegExp = /!\[\]\((.*?)\)/g;
+
+  // 一致するすべての項目を配列として取得
+  const images = data.content?.match(imageRegex);
+
+  // 画像の数を計算
+  const imageCount: number = images ? images.length : 0;
+  console.log(imageCount, "imageCount");
 
   return (
     <>

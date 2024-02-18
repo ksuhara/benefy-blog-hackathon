@@ -32,11 +32,11 @@ function classNames(...classes: string[]) {
 export default function Plans() {
   const [frequency, setFrequency] = useState(frequencies[0]);
   const { data: session, status } = useSession();
+  console.log(session, "session");
 
   function CurrentPlan({ featured }: { featured: boolean }) {
     return (
       <a
-        href={""}
         aria-disabled
         className={classNames(
           featured
@@ -45,7 +45,7 @@ export default function Plans() {
           "mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
         )}
       >
-        Yourr Current Plan
+        現在のプラン
       </a>
     );
   }
@@ -54,31 +54,37 @@ export default function Plans() {
     {
       name: "Free",
       id: "tier-freelancer",
-      price: "Free",
-      description: "The essentials to provide your best work for clients.",
+      price: "無料",
+      description: "ベーシックな機能は無料でご利用いただけます。",
       features: [
-        "Up to 1 site",
-        "Up to 3 posts",
-        "image upload size limit 10MB",
+        "1 サイト(サブドメイン)まで作成可能",
+        "3 記事まで作成可能",
+        // "image upload size limit 10MB",
       ],
       featured: false,
       cta: session?.user?.isActive ? (
-        <p>downgrade</p>
+        <a
+          aria-disabled
+          className={classNames(
+            "bg-stone-300 bg-white/10 text-white text-white shadow-sm hover:bg-stone-300 hover:bg-white/20 focus-visible:outline-stone-600 focus-visible:outline-white",
+          )}
+        >
+          現在のプラン
+        </a>
       ) : (
         <CurrentPlan featured={false} />
       ),
     },
     {
-      name: "Startup",
+      name: "Standard",
       id: "tier-startup",
-      price: { monthly: "$20", annually: "$188" },
-      description: "A plan that scales with your rapidly growing business.",
+      price: { monthly: "¥2,000", annually: "$188" },
+      description: "一般的なご利用に適したプランです。",
       features: [
-        "Up to 2 sites",
-        "Up to 100 posts",
-        "image upload size limit 10MB",
-        "Embedding Mode",
-        "Advanced analytics (Under development)",
+        "3 サイト(サブドメイン)まで作成可能",
+        "100 記事まで作成可能",
+        "iframe 埋め込み機能",
+        "アナリティクス (準備中)",
       ],
       featured: false,
       cta: session?.user?.isActive ? (
@@ -90,16 +96,15 @@ export default function Plans() {
     {
       name: "Enterprise",
       id: "tier-enterprise",
-      href: "#",
+      href: "https://www.pontech.dev/contact",
       price: "Custom",
-      description: "Dedicated support and infrastructure for your company.",
+      description: "事業者向けにカスタマイズいたします。",
       features: [
-        "Unlimited sites",
-        "Unlimited posts",
-        "Advanced analytics",
-        "White-labeling",
-        "Custom design",
-        "Technical Support",
+        "無制限のサイト作成",
+        "無制限の記事作成",
+        "ホワイトラベルの提供",
+        "デザインのカスタマイズ",
+        "テクニカルサポート",
       ],
       featured: true,
       cta: (
