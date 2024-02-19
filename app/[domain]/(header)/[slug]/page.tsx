@@ -161,6 +161,7 @@ export default async function SitePostPage({
               domain: domain,
               slug: slug,
               contentLockedLength: data.contentLockedLength,
+              contentLockedImagesCount: data.contentLockedImagesCount,
             }}
           />
         </>

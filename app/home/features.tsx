@@ -6,61 +6,47 @@ import {
   FingerPrintIcon,
   LockClosedIcon,
   ServerIcon,
+  PencilSquareIcon,
+  ShoppingCartIcon,
+  ShoppingBagIcon,
+  WalletIcon,
 } from "@heroicons/react/20/solid";
 
 const features = [
   {
-    name: "Push to deploy.",
-    description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit aute id magna.",
-    icon: CloudArrowUpIcon,
+    name: "WYSIWYG",
+    description: "Notionライクなエディターでカンタンに記事を編集できます。",
+    icon: PencilSquareIcon,
   },
   {
-    name: "SSL certificates.",
+    name: "NFT保有者限定コンテンツの作成",
     description:
-      "Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.",
+      "チェーン、コントラクトアドレスを指定して閲覧条件を設定できます。",
     icon: LockClosedIcon,
   },
   {
-    name: "Simple queues.",
+    name: "販売ページへの導線",
     description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus.",
-    icon: ArrowPathIcon,
-  },
-  {
-    name: "Advanced security.",
-    description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit aute id magna.",
-    icon: FingerPrintIcon,
-  },
-  {
-    name: "Powerful API.",
-    description:
-      "Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.",
-    icon: Cog6ToothIcon,
-  },
-  {
-    name: "Database backups.",
-    description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. ",
-    icon: ServerIcon,
+      "NFT入手ページを設定し、マーケティングに繋げることもできます。",
+    icon: ShoppingBagIcon,
   },
 ];
 export default function Features() {
   return (
-    <div className="mt-32 sm:mt-56">
+    <div className="mt-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
-          <h2 className="text-base font-semibold leading-7 text-indigo-600">
+          <h2
+            id="features"
+            className="text-base font-semibold leading-7 text-indigo-600"
+          >
             Everything you need
           </h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            No server? No problem.
+            NFTゲート付き記事をカンタンに作成
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores
-            impedit perferendis suscipit eaque, iste dolor cupiditate
-            blanditiis.
+            発行したNFTに付加価値をつけたい！NFT保有者限定コンテンツを作りたい！でもエンジニアがいないと意外と難しい。そんなお悩みを解決します。
           </p>
         </div>
       </div>
@@ -89,7 +75,7 @@ export default function Features() {
                 />
                 {feature.name}
               </dt>{" "}
-              <dd className="inline">{feature.description}</dd>
+              <dd>{feature.description}</dd>
             </div>
           ))}
         </dl>

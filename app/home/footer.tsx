@@ -1,8 +1,11 @@
 export default function Footer() {
   const footerNavigation = {
     solutions: [
-      { name: "Marketing", href: "#" },
-      { name: "Analytics", href: "#" },
+      {
+        name: "NFT Minting",
+        href: "https://benefy.pontech.dev/",
+        isExternel: true,
+      },
     ],
     support: [
       { name: "Pricing", href: "#" },
@@ -10,8 +13,8 @@ export default function Footer() {
       { name: "Guides", href: "#" },
     ],
     company: [
-      { name: "About", href: "#" },
-      { name: "Blog", href: "#" },
+      { name: "About", href: "https://pontech.dev/", isExternel: true },
+      { name: "Blog", href: "https://www.pontech.dev/blog", isExternel: true },
     ],
     legal: [
       { name: "Privacy", href: "#" },
@@ -28,11 +31,7 @@ export default function Footer() {
       </h2>
       <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8 lg:py-32">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-          <img
-            className="h-7"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-            alt="Company name"
-          />
+          <img className="h-7" src="/benefy-square.png" alt="Company name" />
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
@@ -45,6 +44,7 @@ export default function Footer() {
                       <a
                         href={item.href}
                         className="text-sm leading-6 text-gray-300 hover:text-white"
+                        target={item.isExternel ? "_blank" : "_self"}
                       >
                         {item.name}
                       </a>

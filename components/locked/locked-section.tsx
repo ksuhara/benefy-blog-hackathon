@@ -85,6 +85,7 @@ export function LockedSection({
     }[];
     conditionLogic: string;
     contentLockedLength: number | null;
+    contentLockedImagesCount: number | null;
   };
 }) {
   const { isConnected } = useAccount();
@@ -96,6 +97,7 @@ export function LockedSection({
     nftLockConditions,
     conditionLogic,
     contentLockedLength,
+    contentLockedImagesCount,
   } = params;
 
   return (
@@ -107,7 +109,8 @@ export function LockedSection({
           <div className="border-b border-dashed border-stone-300 p-5">
             <h1 className="text-lg font-semibold">続きをみるには</h1>
             <p className="text-sm text-stone-600">
-              残り {contentLockedLength || 0}字 / 5画像
+              残り {contentLockedLength || 0}字 /{" "}
+              {contentLockedImagesCount || 0}画像
             </p>
             {nftLockConditions.length >= 2 && (
               <>

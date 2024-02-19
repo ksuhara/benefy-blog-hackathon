@@ -82,6 +82,7 @@ export async function getPostData(domain: string, slug: string) {
           content: true,
           contentLocked: false,
           contentLockedLength: true,
+          contentLockedImagesCount: true,
           conditionLogic: true,
           nftLockConditions: true,
           site: {

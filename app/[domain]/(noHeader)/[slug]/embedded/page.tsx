@@ -38,6 +38,7 @@ export default async function SitePostPage({
                   domain: domain,
                   slug: slug,
                   contentLockedLength: data.contentLockedLength,
+                  contentLockedImagesCount: data.contentLockedImagesCount,
                 }}
               />
             </>
@@ -46,7 +47,7 @@ export default async function SitePostPage({
       ) : (
         <>
           <div className="text-center">
-            The author must be premium user to use embedded mode.
+            記事投稿者が有料プランに加入している必要があります。
           </div>
         </>
       )}

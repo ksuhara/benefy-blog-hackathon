@@ -5,6 +5,7 @@ import { RadioGroup } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 
 import { useSession } from "next-auth/react";
+import { cn } from "@/lib/utils";
 
 // export default function Plans() {
 //   return (
@@ -25,10 +26,6 @@ const frequencies = [
   { value: "annually", label: "Annually", priceSuffix: "/year" },
 ];
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function Plans() {
   const [frequency, setFrequency] = useState(frequencies[0]);
   const { data: session, status } = useSession();
@@ -38,7 +35,7 @@ export default function Plans() {
     return (
       <a
         aria-disabled
-        className={classNames(
+        className={cn(
           featured
             ? "bg-white/10 text-white hover:bg-white/20 focus-visible:outline-white"
             : "bg-indigo-300 text-white shadow-sm hover:bg-indigo-300 focus-visible:outline-indigo-600",
@@ -63,13 +60,8 @@ export default function Plans() {
       ],
       featured: false,
       cta: session?.user?.isActive ? (
-        <a
-          aria-disabled
-          className={classNames(
-            "bg-stone-300 bg-white/10 text-white text-white shadow-sm hover:bg-stone-300 hover:bg-white/20 focus-visible:outline-stone-600 focus-visible:outline-white",
-          )}
-        >
-          現在のプラン
+        <a className="mt-6 block rounded-md bg-stone-300 px-3 py-2 text-center text-sm font-semibold leading-6 text-white hover:bg-stone-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+          ダウングレードする
         </a>
       ) : (
         <CurrentPlan featured={false} />
@@ -109,7 +101,7 @@ export default function Plans() {
       featured: true,
       cta: (
         <a className="mt-6 block rounded-md bg-white/10 px-3 py-2 text-center text-sm font-semibold leading-6 text-white hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-          Contact sales
+          お問い合わせ
         </a>
       ),
     },
@@ -134,14 +126,14 @@ export default function Plans() {
           {tiers.map((tier) => (
             <div
               key={tier.id}
-              className={classNames(
+              className={cn(
                 tier.featured ? "bg-gray-900 ring-gray-900" : "ring-gray-200",
                 "rounded-3xl p-8 ring-1 xl:p-10",
               )}
             >
               <h3
                 id={tier.id}
-                className={classNames(
+                className={cn(
                   tier.featured ? "text-white" : "text-gray-900",
                   "text-lg font-semibold leading-8",
                 )}
@@ -149,7 +141,7 @@ export default function Plans() {
                 {tier.name}
               </h3>
               <p
-                className={classNames(
+                className={cn(
                   tier.featured ? "text-gray-300" : "text-gray-600",
                   "mt-4 text-sm leading-6",
                 )}
@@ -158,7 +150,7 @@ export default function Plans() {
               </p>
               <p className="mt-6 flex items-baseline gap-x-1">
                 <span
-                  className={classNames(
+                  className={cn(
                     tier.featured ? "text-white" : "text-gray-900",
                     "text-4xl font-bold tracking-tight",
                   )}
@@ -169,7 +161,7 @@ export default function Plans() {
                 </span>
                 {typeof tier.price !== "string" ? (
                   <span
-                    className={classNames(
+                    className={cn(
                       tier.featured ? "text-gray-300" : "text-gray-600",
                       "text-sm font-semibold leading-6",
                     )}
@@ -182,7 +174,7 @@ export default function Plans() {
               {tier.cta && <>{tier.cta}</>}
               <ul
                 role="list"
-                className={classNames(
+                className={cn(
                   tier.featured ? "text-gray-300" : "text-gray-600",
                   "mt-8 space-y-3 text-sm leading-6 xl:mt-10",
                 )}
@@ -190,7 +182,7 @@ export default function Plans() {
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex gap-x-3">
                     <CheckIcon
-                      className={classNames(
+                      className={cn(
                         tier.featured ? "text-white" : "text-indigo-600",
                         "h-6 w-5 flex-none",
                       )}

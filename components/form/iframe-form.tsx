@@ -40,9 +40,13 @@ export default function IframeForm({ url }: { url: string }) {
   return (
     <div className="rounded-lg border border-indigo-600 bg-white dark:bg-black">
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
-        <h2 className="font-cal text-xl dark:text-white">Iframe設定</h2>
+        <h2 className="font-cal text-xl dark:text-white">iframe設定</h2>
         <p className="text-sm text-stone-500 dark:text-stone-400">
-          IframeでNFT限定部分をご自身のサイトに埋め込むことができます。有料ユーザー限定機能です。
+          iframeでNFT限定部分をご自身のサイトに埋め込むことができます。
+          <Link href={"/plans"} className="text-blue-500">
+            有料プラン
+          </Link>
+          ユーザー限定機能です。
         </p>
         <div className="flex items-center">
           <label className="mr-4 text-sm">width</label>

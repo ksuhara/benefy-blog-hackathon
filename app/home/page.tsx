@@ -1,33 +1,20 @@
 "use client";
 import { useState } from "react";
 import { Dialog, Disclosure } from "@headlessui/react";
-import {
-  Bars3Icon,
-  MinusSmallIcon,
-  PlusSmallIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import Link from "next/link";
 import Pricing from "./pricing";
 import Features from "./features";
 import Testmonial from "./testmonial";
 import Footer from "./footer";
+import FAQ from "./faq";
 
 const navigation = [
   { name: "Product", href: "#" },
-  { name: "Features", href: "#" },
-  { name: "Marketplace", href: "#" },
-  { name: "Company", href: "#" },
-];
-
-const faqs = [
-  {
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  },
-  // More questions...
+  { name: "Features", href: "#features" },
+  // { name: "Marketplace", href: "#" },
+  { name: "Company", href: "https://www.pontech.dev/" },
 ];
 
 const url = process.env.NEXT_PUBLIC_VERCEL_ENV
@@ -38,7 +25,7 @@ export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="bg-white">
+    <div className="bg-white" style={{ scrollBehavior: "smooth" }}>
       {/* Header */}
       <header className="absolute inset-x-0 top-0 z-50">
         <nav
@@ -61,7 +48,7 @@ export default function Example() {
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <div className="hidden lg:flex lg:gap-x-12">
+          {/* <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
               <a
                 key={item.name}
@@ -71,13 +58,13 @@ export default function Example() {
                 {item.name}
               </a>
             ))}
-          </div>
+          </div> */}
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <a
               href={url}
               className="text-sm font-semibold leading-6 text-white"
             >
-              Log in <span aria-hidden="true">&rarr;</span>
+              ログイン <span aria-hidden="true">&rarr;</span>
             </a>
           </div>
         </nav>
@@ -114,6 +101,7 @@ export default function Example() {
                     <a
                       key={item.name}
                       href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       {item.name}
@@ -125,7 +113,7 @@ export default function Example() {
                     href="#"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
-                    Log in
+                    ログイン
                   </a>
                 </div>
               </div>
@@ -138,7 +126,7 @@ export default function Example() {
         {/* Hero section */}
         <div className="relative isolate overflow-hidden bg-gray-900 pb-16 pt-14 sm:pb-20">
           <img
-            src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2830&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
+            src="/lp-screen.webp"
             alt=""
             className="absolute inset-0 -z-10 h-full w-full object-cover"
           />
@@ -154,30 +142,25 @@ export default function Example() {
               }}
             />
           </div>
+          <div
+            className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-70"
+            style={{ zIndex: -1 }} // 必要に応じてz-indexを調整
+          ></div>
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-              {/* <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-                <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-400 ring-1 ring-white/10 hover:ring-white/20">
-                  Announcing our next round of funding.{" "}
-                  <a href="#" className="font-semibold text-white">
-                    <span className="absolute inset-0" aria-hidden="true" />
-                    Read more <span aria-hidden="true">&rarr;</span>
-                  </a>
-                </div>
-              </div> */}
               <div className="text-center">
                 <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-6xl">
                   Benefy Blog
                 </h1>
-                <p className="mt-6 text-lg leading-8 text-gray-300">
-                  NFT認証機能付きのブログを簡単に作成！NFTのCMSです。
+                <p className="mt-6 text-lg leading-8 text-white">
+                  NFT認証機能付きのブログをカンタンに作成！NFTのCMSです。
                 </p>
                 <div className="mt-10 flex items-center justify-center gap-x-6">
                   <Link
                     href={url}
-                    className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
+                    className="rounded-md bg-indigo-500 px-5 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
                   >
-                    Get started
+                    はじめる
                   </Link>
                   <Link
                     href="#"
@@ -251,48 +234,7 @@ export default function Example() {
         {/* Pricing section */}
         <Pricing />
         {/* FAQ section */}
-        <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
-          <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
-            <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
-              Frequently asked questions
-            </h2>
-            <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
-              {faqs.map((faq) => (
-                <Disclosure as="div" key={faq.question} className="pt-6">
-                  {({ open }) => (
-                    <>
-                      <dt>
-                        <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
-                          <span className="text-base font-semibold leading-7">
-                            {faq.question}
-                          </span>
-                          <span className="ml-6 flex h-7 items-center">
-                            {open ? (
-                              <MinusSmallIcon
-                                className="h-6 w-6"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <PlusSmallIcon
-                                className="h-6 w-6"
-                                aria-hidden="true"
-                              />
-                            )}
-                          </span>
-                        </Disclosure.Button>
-                      </dt>
-                      <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                        <p className="text-base leading-7 text-gray-600">
-                          {faq.answer}
-                        </p>
-                      </Disclosure.Panel>
-                    </>
-                  )}
-                </Disclosure>
-              ))}
-            </dl>
-          </div>
-        </div>
+        {/* <FAQ/> */}
       </main>
 
       {/* Footer */}

@@ -313,6 +313,18 @@ export const updatePost = async (data: Post) => {
       error: "Post not found",
     };
   }
+
+  const imageRegex: RegExp = /!\[\]\((.*?)\)/g;
+  const images = data.contentLocked?.match(imageRegex);
+
+  // 画像の数を計算
+  const imageCount: number = images ? images.length : 0;
+  const textWithoutImages: string =
+    data.contentLocked?.replace(imageRegex, "") || "";
+  const contentLockedLength: number = textWithoutImages.length;
+
+  console.log(imageCount, "imageCount");
+
   try {
     const response = await prisma.post.update({
       where: {
@@ -323,7 +335,8 @@ export const updatePost = async (data: Post) => {
         description: data.description,
         content: data.content,
         contentLocked: data.contentLocked,
-        contentLockedLength: data.contentLocked?.length,
+        contentLockedLength: contentLockedLength,
+        contentLockedImagesCount: imageCount,
       },
     });
     await revalidateTag(

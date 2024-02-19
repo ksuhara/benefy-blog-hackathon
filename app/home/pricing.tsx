@@ -1,19 +1,24 @@
 import { cn } from "@/lib/utils";
 import { CheckIcon } from "@heroicons/react/20/solid";
+
+const url = process.env.NEXT_PUBLIC_VERCEL_ENV
+  ? `https://app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
+  : `http://app.localhost:8888`;
 const tiers = [
   {
     name: "Free",
     id: "tier-hobby",
-    href: "#",
+    href: url,
     priceMonthly: "無料",
     description: "ベーシックな機能は無料でご利用いただけます。",
     features: ["1 サイト(サブドメイン)まで作成可能", "3 記事まで作成可能"],
     featured: false,
+    cta: "はじめる",
   },
   {
     name: "Standard",
     id: "tier-standard",
-    href: "#",
+    href: `${url}/plans`,
     priceMonthly: "¥2,000",
     description: "一般的なご利用に適したプランです。",
     features: [
@@ -23,11 +28,12 @@ const tiers = [
       "アナリティクス (準備中)",
     ],
     featured: true,
+    cta: "プランページへ",
   },
   {
     name: "Enterprise",
     id: "tier-enterprise",
-    href: "#",
+    href: "https://pontech.dev/contact",
     priceMonthly: "カスタム",
     description: "事業者向けにカスタマイズいたします。",
     features: [
@@ -38,6 +44,7 @@ const tiers = [
       "テクニカルサポート",
     ],
     featured: false,
+    cta: "セールスにお問い合わせ",
   },
 ];
 
@@ -58,15 +65,14 @@ export default function Pricing() {
       </div>
       <div className="mx-auto max-w-2xl text-center lg:max-w-4xl">
         <h2 className="text-base font-semibold leading-7 text-indigo-600">
-          ご利用プラン
+          Pricing plans for teams of all sizes
         </h2>
-        <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-          The right price for you, whoever you are
+        <p className="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          ご利用プラン
         </p>
       </div>
       <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">
-        Qui iusto aut est earum eos quae. Eligendi est at nam aliquid ad quo
-        reprehenderit in aliquid fugiat dolorum voluptatibus.
+        有料プランにすることで、より多くの記事を投稿したり、便利な機能を使うことができます。
       </p>
       <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-3">
         {tiers.map((tier, tierIdx) => (
@@ -109,7 +115,7 @@ export default function Pricing() {
                     "text-base",
                   )}
                 >
-                  /month
+                  /月
                 </span>
               )}
             </p>
@@ -151,7 +157,7 @@ export default function Pricing() {
                 "mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10",
               )}
             >
-              Get started today
+              {tier.cta}
             </a>
           </div>
         ))}
