@@ -16,7 +16,9 @@ export default function NFTLockForm({ data }: { data: any }) {
   const { update } = useSession();
 
   const [lockConditions, setLockConditions] = useState(
-    data?.nftLockConditions || [{ chainId: "1", contractAddress: "" }],
+    data?.nftLockConditions.length
+      ? data?.nftLockConditions
+      : [{ chainId: "1", contractAddress: "" }],
   );
   const [conditionLogic, setConditionLogic] = useState(
     data.conditionLogic || "AND",

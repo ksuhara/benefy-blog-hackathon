@@ -9,8 +9,7 @@ export default function Footer() {
     ],
     support: [
       { name: "Pricing", href: "#" },
-      { name: "Documentation", href: "#" },
-      { name: "Guides", href: "#" },
+      { name: "Guides", href: "https://pontech.benefy.blog/guide-how-to-post" },
     ],
     company: [
       { name: "About", href: "https://pontech.dev/", isExternel: true },
