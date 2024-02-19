@@ -153,7 +153,7 @@ export default function Example() {
                   Benefy Blog
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-white">
-                  NFT認証機能付きのブログをカンタンに作成！NFTのCMSです。
+                  NFTホルダー限定コンテンツをカンタンに作成できるブログCMS
                 </p>
                 <div className="mt-10 flex items-center justify-center gap-x-6">
                   <Link
