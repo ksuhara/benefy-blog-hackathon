@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 const title = "Benefy Blog – NFTゲート機能を持ったブログ用CMS";
 const description =
-  "The Platforms Starter Kit is a full-stack Next.js app with multi-tenancy and custom domain support. Built with Next.js App Router, Vercel Postgres and the Vercel Domains API.";
+  "Benefy BlogはNFT保有者限定で閲覧できるコンテンツを簡単に作成できるCMSです。無料で始められます。";
 const image = "https://vercel.pub/thumbnail.png";
 
 export const metadata: Metadata = {

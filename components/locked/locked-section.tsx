@@ -15,24 +15,47 @@ import SignMessageButton from "./sign-message-button";
 import Link from "next/link";
 import { LockedContent } from "./locked-content";
 import BlurImage from "../blur-image";
+import useWindowSize from "@/lib/hooks/use-window-size";
 
 export function WalletOptions() {
   const { connectors, connect } = useConnect();
+  const { isMobile, isDesktop } = useWindowSize();
+
   return (
-    <div className="mt-8 grid gap-2 sm:grid sm:grid-cols-2">
-      {connectors[0] && (
-        <WalletOption
-          connector={connectors[0]}
-          onClick={() => connect({ connector: connectors[0] })}
-        />
+    <>
+      {isDesktop && (
+        <div className="mt-8 grid gap-2 sm:grid sm:grid-cols-2">
+          {connectors[0] && (
+            <WalletOption
+              connector={connectors[0]}
+              onClick={() => connect({ connector: connectors[0] })}
+            />
+          )}
+          {connectors[1] && (
+            <WalletOption
+              connector={connectors[1]}
+              onClick={() => connect({ connector: connectors[1] })}
+            />
+          )}
+        </div>
       )}
-      {connectors[1] && (
-        <WalletOption
-          connector={connectors[1]}
-          onClick={() => connect({ connector: connectors[1] })}
-        />
+      {isMobile && (
+        <div className="mt-8 grid gap-2 sm:grid sm:grid-cols-2">
+          {/* {connectors[0] && (
+            <WalletOption
+              connector={connectors[2]}
+              onClick={() => connect({ connector: connectors[2] })}
+            />
+          )} */}
+          {connectors[1] && (
+            <WalletOption
+              connector={connectors[1]}
+              onClick={() => connect({ connector: connectors[1] })}
+            />
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 }
 

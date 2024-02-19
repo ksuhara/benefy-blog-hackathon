@@ -3,7 +3,7 @@
 import { http, createConfig, WagmiProvider } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { walletConnect, injected } from "wagmi/connectors";
+import { walletConnect, injected, metaMask } from "wagmi/connectors";
 const config = createConfig({
   chains: [mainnet, sepolia],
   connectors: [

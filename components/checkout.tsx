@@ -4,7 +4,11 @@ import { useState } from "react";
 
 export default function Checkout() {
   const [type, setType] = useState<string>("monthly");
-  const [plan, setPlan] = useState<string>("price_1OkPmfDg03Vrdi3nCzdTl2BU");
+  const [plan, setPlan] = useState<string>(
+    process.env.NEXT_PUBLIC_VERCEL_ENV
+      ? "price_1OlRpmDg03Vrdi3nXazFHRc6"
+      : "price_1OkPmfDg03Vrdi3nCzdTl2BU",
+  );
 
   const handleCreateCheckoutSession = async (productId: string) => {
     const res = await fetch(`/api/stripe/checkout-session`, {
