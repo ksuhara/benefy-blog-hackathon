@@ -14,11 +14,11 @@ export default function Footer() {
     ],
     company: [
       { name: "About", href: "https://pontech.dev/", isExternel: true },
-      { name: "Blog", href: "https://www.pontech.dev/blog", isExternel: true },
+      { name: "Blog", href: "https://pontech.dev/blog", isExternel: true },
     ],
     legal: [
-      { name: "Privacy", href: "#" },
-      { name: "Terms", href: "#" },
+      { name: "Privacy", href: "https://benefy.blog/privacy" },
+      { name: "Terms", href: "https://benefy.blog/terms" },
     ],
   };
   return (
