@@ -163,7 +163,8 @@ export default function Example() {
                     はじめる
                   </Link>
                   <Link
-                    href="#"
+                    href="https://pontech.benefy.blog/live-demo"
+                    target="_blank"
                     className="text-sm font-semibold leading-6 text-white"
                   >
                     Live demo <span aria-hidden="true">→</span>
