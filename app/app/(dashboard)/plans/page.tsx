@@ -1,10 +1,10 @@
 "use client";
 import Checkout from "@/components/checkout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
 
 // export default function Plans() {
@@ -29,7 +29,14 @@ const frequencies = [
 export default function Plans() {
   const [frequency, setFrequency] = useState(frequencies[0]);
   const { data: session, status } = useSession();
-  console.log(session, "session");
+
+  useEffect(() => {
+    const refreshSession = async () => {
+      const session = await getSession();
+      console.log(session);
+    };
+    refreshSession();
+  }, []);
 
   function CurrentPlan({ featured }: { featured: boolean }) {
     return (

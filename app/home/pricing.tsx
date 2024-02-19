@@ -28,7 +28,7 @@ const tiers = [
       "アナリティクス (準備中)",
     ],
     featured: true,
-    cta: "プランページへ",
+    cta: "はじめる",
   },
   {
     name: "Enterprise",
