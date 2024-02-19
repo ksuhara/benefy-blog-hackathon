@@ -160,7 +160,7 @@ export function LockedSection({
                 >
                   <div className="sm:flex sm:items-center">
                     <img
-                      src={condition.collectionLogo || "/placeholder.png"}
+                      src={condition.collectionLogo || "/nft-placeholder.webp"}
                       className="mx-auto h-12 w-auto "
                     />
                     <span className="ml-2 font-medium text-stone-800">
