@@ -28,8 +28,8 @@ import Image from "next/image";
 
 const externalLinks = [
   {
-    name: "Read the guide",
-    href: "https://vercel.com/guides/nextjs-multi-tenant-application",
+    name: "ガイドを読む",
+    href: "https://pontech.benefy.blog/guide-how-to-post",
     icon: <FileCode width={18} />,
   },
 ];
