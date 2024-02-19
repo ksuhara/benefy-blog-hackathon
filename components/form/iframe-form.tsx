@@ -70,6 +70,14 @@ export default function IframeForm({ url }: { url: string }) {
             className="w-full max-w-xs rounded-md border border-stone-300 text-sm text-stone-900 placeholder-stone-300 focus:border-stone-500 focus:outline-none focus:ring-stone-500 dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700"
           />
         </div>
+        <p className="text-sm font-semibold">プレビュー</p>
+        <div className="border text-center">
+          <iframe
+            width={width}
+            height={height}
+            src={`${url}/embedded`}
+          ></iframe>
+        </div>
         <div className="my-2 flex">
           {url && (
             <div className="overflow-x-auto whitespace-nowrap rounded-lg bg-gray-100 p-2">
@@ -79,14 +87,6 @@ export default function IframeForm({ url }: { url: string }) {
                 src="${url}/embedded"></iframe>`}
             </div>
           )}
-        </div>
-        <p className="text-sm font-semibold">プレビュー</p>
-        <div className="border text-center">
-          <iframe
-            width={width}
-            height={height}
-            src={`${url}/embedded`}
-          ></iframe>
         </div>
       </div>
 

@@ -145,8 +145,10 @@ export default function NFTLockForm({ data }: { data: any }) {
                   >
                     <option value="1">Ethereum</option>
                     <option value="137">Polygon</option>
-                    <option value="80001">Mumbai</option>
-                    <option value="111111">Base</option>
+                    <option value="84532">Base</option>
+                    <option value="43114">Avalanche</option>
+                    <option value="42161">Arbitrum</option>
+                    <option value="10">Optimism</option>
                   </select>
                 </div>
               </div>

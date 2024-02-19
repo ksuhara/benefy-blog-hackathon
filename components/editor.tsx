@@ -18,6 +18,29 @@ export default function Editor({ post }: { post: PostWithSite }) {
   const [data, setData] = useState<PostWithSite>(post);
   const [hydrated, setHydrated] = useState(false);
 
+  // const [isDirty, setIsDirty] = useState(false);
+
+  // useEffect(() => {
+  //   console.log("set is dirty effect");
+  //   // ページを離れる際に警告を表示する関数
+  //   const handleBeforeUnload = (event: any) => {
+  //     console.log("handleBeforeUnload");
+  //     if (isDirty) {
+  //       // デフォルトの警告メッセージを表示
+  //       event.preventDefault();
+  //       event.returnValue = "保存せずにページを離れますか？";
+  //     }
+  //   };
+
+  //   // イベントリスナーを追加
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
+
+  //   // コンポーネントがアンマウントされる時にイベントリスナーを削除
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, [isDirty]); // 依存配列にisDirtyを設定
+
   const url = process.env.NEXT_PUBLIC_VERCEL_ENV
     ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
     : `http://${data.site?.subdomain}.localhost:8888/${data.slug}`;
@@ -113,6 +136,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
         className="relative block rounded-md border-2 border-pink-200 text-stone-800 dark:border-pink-800 dark:text-stone-200"
         defaultValue={post?.content || " "}
         onUpdate={(editor) => {
+          // setIsDirty(true);
           setData((prev) => ({
             ...prev,
             content: editor?.storage.markdown.getMarkdown(),
@@ -121,12 +145,13 @@ export default function Editor({ post }: { post: PostWithSite }) {
         disableLocalStorage
       />
       <h3 className="mb-2 mt-16 text-lg font-semibold dark:text-stone-200">
-        NFT Locked Content ↓
+        以下でNFT保有者限定コンテンツを編集 ↓
       </h3>
       <NovelEditor
         className="relative block rounded-md border-2 border-indigo-200 text-stone-800 dark:border-teal-800 dark:text-stone-200"
         defaultValue={post?.contentLocked || " "}
         onUpdate={(editor) => {
+          // setIsDirty(true);
           setData((prev) => ({
             ...prev,
             contentLocked: editor?.storage.markdown.getMarkdown(),
