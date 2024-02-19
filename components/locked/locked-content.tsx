@@ -16,7 +16,7 @@ export function LockedContent({
     console.log(params, "params");
     if (!params.domain) return;
     if (!session) return;
-    // fetchContent();
+    fetchContent();
   }, [session]);
 
   const fetchContent = async () => {
