@@ -149,7 +149,7 @@ export const authOptions: NextAuthOptions = {
   },
   events: {
     createUser: async ({ user }) => {
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_API_KEY!, {
         apiVersion: "2023-10-16",
       });
 
