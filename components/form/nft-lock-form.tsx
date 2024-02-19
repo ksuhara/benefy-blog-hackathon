@@ -130,7 +130,7 @@ export default function NFTLockForm({ data }: { data: any }) {
               key={index}
               className="space-y-2 rounded bg-stone-100 p-4 dark:bg-stone-900"
             >
-              <div className="flex items-center justify-between">
+              <div className="items-center justify-between sm:flex">
                 <label className="mr-2 text-sm font-semibold">チェーン</label>
                 <div className="flex w-full max-w-md items-center overflow-hidden rounded-lg border border-stone-300 ">
                   <select
@@ -152,7 +152,7 @@ export default function NFTLockForm({ data }: { data: any }) {
                   </select>
                 </div>
               </div>
-              <div className="flex w-full items-center justify-between">
+              <div className="w-full items-center justify-between sm:flex">
                 <label className="mr-2 text-sm font-semibold">
                   コントラクトアドレス
                 </label>
@@ -167,7 +167,7 @@ export default function NFTLockForm({ data }: { data: any }) {
                   className="w-full max-w-md rounded-md border border-stone-300 px-4 py-2 text-sm text-stone-900 placeholder-stone-300 focus:border-stone-500 focus:outline-none focus:ring-stone-500 dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700"
                 />
               </div>
-              <div className="flex w-full items-center justify-between">
+              <div className="w-full items-center justify-between sm:flex">
                 <label className="mr-2 text-sm font-semibold">
                   NFTコレクション名など
                 </label>
@@ -182,7 +182,7 @@ export default function NFTLockForm({ data }: { data: any }) {
                   className="w-full max-w-md rounded-md border border-stone-300 px-4 py-2 text-sm text-stone-900 placeholder-stone-300 focus:border-stone-500 focus:outline-none focus:ring-stone-500 dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700"
                 />
               </div>
-              <div className="flex w-full items-center justify-between">
+              <div className="w-full items-center justify-between sm:flex">
                 <label className="mr-2 text-sm font-semibold">
                   販売ページURL
                 </label>
@@ -201,7 +201,7 @@ export default function NFTLockForm({ data }: { data: any }) {
                   <button
                     type="button"
                     onClick={() => removeLockCondition(index)}
-                    className="rounded bg-red-500 px-4 py-2 text-sm text-white"
+                    className="rounded-xl border-2 bg-red-500 px-4 py-2 text-sm text-white"
                   >
                     削除する
                   </button>
@@ -215,7 +215,7 @@ export default function NFTLockForm({ data }: { data: any }) {
           <button
             type="button"
             onClick={addLockCondition}
-            className="mt-2 w-full rounded-xl bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+            className="mt-2 w-full rounded-xl border-2 bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
           >
             + 条件を追加する
           </button>
