@@ -15,7 +15,7 @@ export function LockedContent({
   useEffect(() => {
     console.log(params, "params");
     if (!params.domain) return;
-    if (!session) return;
+    if (!session || !session.user?.id.includes("0x")) return;
     fetchContent();
   }, [session]);
 
