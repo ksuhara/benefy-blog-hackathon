@@ -41,6 +41,7 @@ export async function POST(request: Request) {
           },
           // Update that customer so their status is now active
           data: {
+            stripeSubscriptionId: subscription.id,
             isActive: true,
           },
         });

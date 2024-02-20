@@ -6,6 +6,7 @@ import { CheckIcon } from "@heroicons/react/20/solid";
 
 import { useSession, getSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 // export default function Plans() {
 //   return (
@@ -38,6 +39,20 @@ export default function Plans() {
     refreshSession();
   }, []);
 
+  const handleDowngrade = async () => {
+    const res = await fetch(`/api/stripe/cancel-subscription`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.ok) {
+      toast.success("正常にダウングレードしました");
+    } else {
+      toast.error("ダウングレードに失敗しました。運営にお問い合わせください。");
+    }
+  };
+
   function CurrentPlan({ featured }: { featured: boolean }) {
     return (
       <a
@@ -67,9 +82,12 @@ export default function Plans() {
       ],
       featured: false,
       cta: session?.user?.isActive ? (
-        <a className="mt-6 block rounded-md bg-stone-300 px-3 py-2 text-center text-sm font-semibold leading-6 text-white hover:bg-stone-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+        <button
+          onClick={handleDowngrade}
+          className="mt-6 block rounded-md bg-stone-300 px-3 py-2 text-center text-sm font-semibold leading-6 text-white hover:bg-stone-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
           ダウングレードする
-        </a>
+        </button>
       ) : (
         <CurrentPlan featured={false} />
       ),

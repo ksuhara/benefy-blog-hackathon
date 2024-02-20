@@ -142,6 +142,8 @@ export const authOptions: NextAuthOptions = {
         // @ts-expect-error
         stripeCustomerId: token?.user?.stripeCustomerId,
         // @ts-expect-error
+        stripeSubscriptionId: token?.user?.stripeSubscriptionId,
+        // @ts-expect-error
         isActive: token?.user?.isActive,
       };
       return session;
@@ -180,6 +182,7 @@ export function getSession() {
       image: string;
       isActive: boolean;
       stripeCustomerId: string;
+      stripeSubscriptionId: string | null;
     };
   } | null>;
 }
