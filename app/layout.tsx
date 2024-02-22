@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 const title = "Benefy Blog – NFTゲート機能を持ったブログ用CMS";
 const description =
   "Benefy BlogはNFT保有者限定で閲覧できるコンテンツを簡単に作成できるCMSです。無料で始められます。";
-const image = "https://vercel.pub/thumbnail.png";
+const image = "https://benefy.blog/thumbnail.png";
 
 export const metadata: Metadata = {
   title,
