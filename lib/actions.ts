@@ -16,6 +16,7 @@ import { put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
 import Moralis from "moralis";
+import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -454,26 +455,63 @@ export const updatePostNFTGateway = withPostAuth(
     }
 
     const lockConditionsWithLogo = [];
+
+    // lockConditionsの中にchainIdがaptosのものがある場合、他のconditionsもaptosに限定したいです。それ以外のチェーンの場合はエラーを出すようにコードを生成してください
+    const chainIds = lockConditions.map((condition: any) => {
+      return condition.chainId;
+    });
+    if (chainIds.includes("aptos")) {
+      // すべてのconditionsがAptosに限定されているか確認
+      const isAllAptos = chainIds.every(
+        (chainId: string) => chainId === "aptos",
+      );
+      if (!isAllAptos)
+        return {
+          error: `AptosとEVMのコントラクトは併用できません`,
+        };
+    }
+
     for (const condition of lockConditions) {
       try {
         const { chainId, contractAddress } = condition;
-        const response = await Moralis.EvmApi.nft.getNFTContractMetadata({
-          address: contractAddress,
-          chain: `0x${Number(chainId).toString(16)}`,
-        });
+        if (chainId == "aptos") {
+          const APTOS_NETWORK: Network = Network.MAINNET;
+          const config = new AptosConfig({ network: APTOS_NETWORK });
+          const aptos = new Aptos(config);
 
-        // Save the collection logo URL
-        const collectionLogo = (response?.toJSON() as any).collection_logo;
-        console.log(collectionLogo);
+          const aptosCollection = await aptos.getCollectionDataByCollectionId({
+            collectionId: contractAddress,
+          });
+          if (!aptosCollection) {
+            return {
+              error: `NFT contract not found`,
+            };
+          }
 
-        // Add the collection logo URL to the condition
-        lockConditionsWithLogo.push({ ...condition, collectionLogo });
-        if (!response) {
-          return {
-            error: `NFT contract not found`,
-          };
+          lockConditionsWithLogo.push({
+            ...condition,
+            collectionLogo: aptosCollection.uri,
+          });
+        } else {
+          const response = await Moralis.EvmApi.nft.getNFTContractMetadata({
+            address: contractAddress,
+            chain: `0x${Number(chainId).toString(16)}`,
+          });
+
+          // Save the collection logo URL
+          const collectionLogo = (response?.toJSON() as any).collection_logo;
+          console.log(collectionLogo);
+
+          // Add the collection logo URL to the condition
+          lockConditionsWithLogo.push({ ...condition, collectionLogo });
+          if (!response) {
+            return {
+              error: `NFT contract not found`,
+            };
+          }
         }
       } catch (error) {
+        console.log(error, "error");
         return {
           error: `NFT contract not found`,
         };

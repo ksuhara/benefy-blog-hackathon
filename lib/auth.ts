@@ -6,6 +6,8 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 import { SiweMessage } from "siwe";
 import Stripe from "stripe";
+import nacl from "tweetnacl";
+import { HexString } from "aptos";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 
@@ -49,41 +51,76 @@ export const authOptions: NextAuthOptions = {
           type: "text",
           placeholder: "0x0",
         },
+        blockchainType: { label: "Blockchain Type", type: "text" }, // Ethereum または Aptos
       },
       async authorize(credentials) {
-        try {
-          const siwe = new SiweMessage(
-            JSON.parse(credentials?.message || "{}"),
-          );
-          const nextAuthUrl = new URL(siwe.uri);
+        if (credentials?.blockchainType === "ethereum") {
+          try {
+            const siwe = new SiweMessage(
+              JSON.parse(credentials?.message || "{}"),
+            );
+            const nextAuthUrl = new URL(siwe.uri);
 
-          const result = await siwe.verify({
-            signature: credentials?.signature || "",
-            domain: nextAuthUrl.host,
-            nonce: siwe.nonce,
-          });
+            const result = await siwe.verify({
+              signature: credentials?.signature || "",
+              domain: nextAuthUrl.host,
+              nonce: siwe.nonce,
+            });
 
-          if (result.success) {
+            if (result.success) {
+              await prisma.user.upsert({
+                where: {
+                  id: siwe.address,
+                },
+                update: {
+                  id: siwe.address,
+                  name: siwe.address,
+                },
+                create: {
+                  id: siwe.address,
+                  name: siwe.address,
+                },
+              });
+              return {
+                id: siwe.address,
+              };
+            } else return null;
+          } catch (e) {
+            return null;
+          }
+        } else if (credentials?.blockchainType === "aptos") {
+          try {
+            const parsed = JSON.parse(credentials?.signature);
+            const key = parsed.address!.slice(2, 66);
+
+            // TODO FIX
+            const verified = nacl.sign.detached.verify(
+              new TextEncoder().encode(parsed.fullMessage),
+              new HexString(parsed.signature).toUint8Array(),
+              new HexString(key).toUint8Array(),
+            );
+
             await prisma.user.upsert({
               where: {
-                id: siwe.address,
+                id: parsed.address,
               },
               update: {
-                id: siwe.address,
-                name: siwe.address,
+                id: parsed.address,
+                name: parsed.address,
               },
               create: {
-                id: siwe.address,
-                name: siwe.address,
+                id: parsed.address,
+                name: parsed.address,
               },
             });
             return {
-              id: siwe.address,
+              id: parsed.address,
             };
-          } else return null;
-        } catch (e) {
-          return null;
+          } catch (e) {
+            return null;
+          }
         }
+        return null;
       },
     }),
   ],

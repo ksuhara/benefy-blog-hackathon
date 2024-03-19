@@ -46,7 +46,10 @@ export default function NFTLockForm({ data }: { data: any }) {
   };
   const validateContractAddress = (address: string) => {
     // Ethereumアドレスの基本的なバリデーション（0xで始まる42文字の長さ）
-    return address.startsWith("0x") && address.length === 42;
+    return (
+      address.length === 66 ||
+      (address.startsWith("0x") && address.length === 42)
+    );
   };
 
   const handleChangeContractAddress = (index: number, value: string) => {
@@ -56,7 +59,7 @@ export default function NFTLockForm({ data }: { data: any }) {
       newConditions[index].error = ""; // エラーをクリア
     } else {
       newConditions[index].contractAddress = value;
-      newConditions[index].error = "Invalid Ethereum contract address"; // エラーメッセージを設定
+      newConditions[index].error = "Invalid Ethereum/Aptos contract address"; // エラーメッセージを設定
     }
     setLockConditions(newConditions);
   };
@@ -151,6 +154,7 @@ export default function NFTLockForm({ data }: { data: any }) {
                     <option value="43114">Avalanche</option>
                     <option value="42161">Arbitrum</option>
                     <option value="10">Optimism</option>
+                    <option value="aptos">Aptos</option>
                   </select>
                 </div>
               </div>

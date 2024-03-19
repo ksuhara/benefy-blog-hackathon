@@ -11,6 +11,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import { replaceExamples, replaceTweets } from "@/lib/remark-plugins";
 import { getSession } from "@/lib/auth";
 import Moralis from "moralis";
+import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
 export async function POST(req: Request): Promise<Response> {
   let { slug } = await req.json();
@@ -38,7 +39,6 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   if (!Moralis.Core.isStarted) {
-    console.log(process.env.MORALIS_API_KEY, "moralis api key");
     await Moralis.start({
       apiKey: process.env.MORALIS_API_KEY,
     });
@@ -47,27 +47,38 @@ export async function POST(req: Request): Promise<Response> {
 
   for (const nftLockCondition of data.nftLockConditions) {
     try {
-      console.log({
-        tokenAddresses: [nftLockCondition.contractAddress],
-        address: userAddress,
-        chain: `0x${Number(nftLockCondition.chainId).toString(16)}`,
-      });
-      const response = await Moralis.EvmApi.nft.getWalletNFTs({
-        tokenAddresses: [nftLockCondition.contractAddress],
-        address: userAddress,
-        chain: `0x${Number(nftLockCondition.chainId).toString(16)}`,
-      });
-      //   console.log(response, "response");
-      //   console.log(response?.result, "response");
+      if (nftLockCondition.chainId === "aptos") {
+        const APTOS_NETWORK: Network = Network.MAINNET;
+        const config = new AptosConfig({ network: APTOS_NETWORK });
+        const aptos = new Aptos(config);
+        const owned = await aptos.getAccountOwnedTokensFromCollectionAddress({
+          accountAddress: userAddress,
+          collectionAddress: nftLockCondition.contractAddress,
+        });
+        const hasNFT = owned && owned.length > 0;
+        if (data.conditionLogic === "OR" && hasNFT) {
+          isConditionMet = true; // OR条件でNFTを持っている場合はtrueに設定してループを抜ける
+          break;
+        } else if (data.conditionLogic === "AND" && !hasNFT) {
+          isConditionMet = false; // AND条件でNFTを持っていない場合はfalseに設定してループを抜ける
+          break;
+        }
+      } else {
+        const response = await Moralis.EvmApi.nft.getWalletNFTs({
+          tokenAddresses: [nftLockCondition.contractAddress],
+          address: userAddress,
+          chain: `0x${Number(nftLockCondition.chainId).toString(16)}`,
+        });
 
-      const hasNFT = response && response.result.length > 0;
+        const hasNFT = response && response.result.length > 0;
 
-      if (data.conditionLogic === "OR" && hasNFT) {
-        isConditionMet = true; // OR条件でNFTを持っている場合はtrueに設定してループを抜ける
-        break;
-      } else if (data.conditionLogic === "AND" && !hasNFT) {
-        isConditionMet = false; // AND条件でNFTを持っていない場合はfalseに設定してループを抜ける
-        break;
+        if (data.conditionLogic === "OR" && hasNFT) {
+          isConditionMet = true; // OR条件でNFTを持っている場合はtrueに設定してループを抜ける
+          break;
+        } else if (data.conditionLogic === "AND" && !hasNFT) {
+          isConditionMet = false; // AND条件でNFTを持っていない場合はfalseに設定してループを抜ける
+          break;
+        }
       }
     } catch (e) {
       console.error(e, "error accessing Moralis API");

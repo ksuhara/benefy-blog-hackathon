@@ -1,7 +1,13 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
+
+import { PetraWallet } from "petra-plugin-wallet-adapter";
+import { WalletSelector } from "@aptos-labs/wallet-adapter-ant-design";
+import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 import {
   Connector,
@@ -12,10 +18,14 @@ import {
   useEnsName,
 } from "wagmi";
 import SignMessageButton from "./sign-message-button";
+import SignMessageButtonAptos from "./sign-message-button-aptos";
 import Link from "next/link";
 import { LockedContent } from "./locked-content";
 import BlurImage from "../blur-image";
 import useWindowSize from "@/lib/hooks/use-window-size";
+import { AptosWalletAdapterProvider } from "@aptos-labs/wallet-adapter-react";
+
+const aptosWallets = [new PetraWallet()];
 
 export function WalletOptions() {
   const { connectors, connect } = useConnect();
@@ -112,7 +122,7 @@ export function LockedSection({
   };
 }) {
   const { isConnected } = useAccount();
-  console.log(isConnected, "isConnected");
+  const [isSignedAptos, setIsSignedAptos] = useState(false);
 
   const {
     domain,
@@ -153,7 +163,7 @@ export function LockedSection({
           <div className="p-5">
             {/* <!-- Price display --> */}
             <div className="my-4">
-              {params.nftLockConditions.map((condition, i) => (
+              {nftLockConditions.map((condition, i) => (
                 <div
                   key={i}
                   className="mx-4 mb-4 items-center justify-between sm:flex "
@@ -175,30 +185,28 @@ export function LockedSection({
                 </div>
               ))}
             </div>
-
-            {isConnected ? (
-              <>
-                <Account />
-                <SignMessageButton />
-              </>
+            {nftLockConditions && nftLockConditions[0]?.chainId == "aptos" ? (
+              <AptosWalletAdapterProvider plugins={aptosWallets}>
+                <WalletSelector />
+                <SignMessageButtonAptos setIsSignedAptos={setIsSignedAptos} />
+              </AptosWalletAdapterProvider>
             ) : (
-              <WalletOptions />
+              <>
+                {isConnected ? (
+                  <>
+                    <Account />
+                    <SignMessageButton />
+                  </>
+                ) : (
+                  <WalletOptions />
+                )}
+              </>
             )}
-            {/* <!-- Subscription option --> */}
-            {/* <div className="mt-4 border-t border-gray-200 pt-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-800">
-                  定期購読オプション
-                </span>
-                <span className="text-lg font-semibold text-gray-900">
-                  ¥1,000/月 ▼
-                </span>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
       {isConnected && <LockedContent params={{ domain, slug }} />}
+      {isSignedAptos && <LockedContent params={{ domain, slug }} />}
     </>
   );
 }

@@ -27,6 +27,7 @@ export default function SignMessageButton() {
         message: JSON.stringify(message),
         redirect: false,
         signature,
+        blockchainType: "ethereum",
       });
       console.log(response, "response");
     } catch (error) {
