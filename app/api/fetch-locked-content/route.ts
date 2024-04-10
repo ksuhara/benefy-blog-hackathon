@@ -65,7 +65,7 @@ export async function POST(req: Request): Promise<Response> {
         }
       } else if (nftLockCondition.chainId == "3776") {
         const response = await fetch(
-          `https://api.bluez.app/api/nft/v3/${process.env.NEXT_PUBLIC_BLUEZ_API_KEY}/getOwnersForContract?contractAddress=${contractAddress}&chainId=3776&pageKey=1&pageSize=100`,
+          `https://api.bluez.app/api/nft/v3/${process.env.NEXT_PUBLIC_BLUEZ_API_KEY}/getOwnersForContract?contractAddress=${nftLockCondition.contractAddress}&chainId=3776&pageKey=1&pageSize=100`,
         );
         const owners = await response.json();
         const hasNFT = owners.items.includes(userAddress);
