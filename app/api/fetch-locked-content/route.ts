@@ -63,6 +63,19 @@ export async function POST(req: Request): Promise<Response> {
           isConditionMet = false; // AND条件でNFTを持っていない場合はfalseに設定してループを抜ける
           break;
         }
+      } else if (nftLockCondition.chainId == "3776") {
+        const response = await fetch(
+          `https://api.bluez.app/api/nft/v3/${process.env.NEXT_PUBLIC_BLUEZ_API_KEY}/getOwnersForContract?contractAddress=${contractAddress}&chainId=3776&pageKey=1&pageSize=100`,
+        );
+        const owners = await response.json();
+        const hasNFT = owners.items.includes(userAddress);
+        if (data.conditionLogic === "OR" && hasNFT) {
+          isConditionMet = true; // OR条件でNFTを持っている場合はtrueに設定してループを抜ける
+          break;
+        } else if (data.conditionLogic === "AND" && !hasNFT) {
+          isConditionMet = false; // AND条件でNFTを持っていない場合はfalseに設定してループを抜ける
+          break;
+        }
       } else {
         const response = await Moralis.EvmApi.nft.getWalletNFTs({
           tokenAddresses: [nftLockCondition.contractAddress],
@@ -98,7 +111,7 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
-  console.log(data, "data");
+  // console.log(data, "data");
   if (!data?.contentLocked) {
     return NextResponse.error();
   }

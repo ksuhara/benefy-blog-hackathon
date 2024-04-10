@@ -15,7 +15,7 @@ export default async function SitePostPage({
     notFound();
   }
 
-  console.log(data, "data");
+  // console.log(data, "data");
   const imageRegex: RegExp = /!\[\]\((.*?)\)/g;
 
   // 一致するすべての項目を配列として取得

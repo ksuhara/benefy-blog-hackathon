@@ -474,6 +474,7 @@ export const updatePostNFTGateway = withPostAuth(
     for (const condition of lockConditions) {
       try {
         const { chainId, contractAddress } = condition;
+        console.log(chainId, contractAddress, "chainId, contractAddress");
         if (chainId == "aptos") {
           const APTOS_NETWORK: Network = Network.MAINNET;
           const config = new AptosConfig({ network: APTOS_NETWORK });
@@ -492,6 +493,13 @@ export const updatePostNFTGateway = withPostAuth(
             ...condition,
             collectionLogo: aptosCollection.uri,
           });
+        } else if (chainId == "3776") {
+          console.log("bluez");
+          const response = await fetch(
+            `https://api.bluez.app/api/nft/v3/${process.env.NEXT_PUBLIC_BLUEZ_API_KEY}/getOwnersForContract?contractAddress=${contractAddress}&chainId=3776&pageKey=1&pageSize=100`,
+          );
+          const data = await response.json();
+          lockConditionsWithLogo.push({ ...condition });
         } else {
           const response = await Moralis.EvmApi.nft.getNFTContractMetadata({
             address: contractAddress,

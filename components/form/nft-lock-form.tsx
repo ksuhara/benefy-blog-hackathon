@@ -88,10 +88,11 @@ export default function NFTLockForm({ data }: { data: any }) {
         formData.append("conditionLogic", conditionLogic);
 
         console.log(formData, "formData");
-
+        console.log("test");
         updatePostNFTGateway(formData, id, "conditions").then(
           async (res: any) => {
             if (res.error) {
+              console.log("error", res.error);
               toast.error(res.error);
             } else {
               va.track(`Updated conditions`, id ? { id } : {});
@@ -154,6 +155,7 @@ export default function NFTLockForm({ data }: { data: any }) {
                     <option value="43114">Avalanche</option>
                     <option value="42161">Arbitrum</option>
                     <option value="10">Optimism</option>
+                    <option value="3776">Astar zkEVM</option>
                     <option value="aptos">Aptos</option>
                   </select>
                 </div>
@@ -173,6 +175,28 @@ export default function NFTLockForm({ data }: { data: any }) {
                   className="w-full max-w-md rounded-md border border-stone-300 px-4 py-2 text-sm text-stone-900 placeholder-stone-300 focus:border-stone-500 focus:outline-none focus:ring-stone-500 dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700"
                 />
               </div>
+              {lockConditions[index].chainId === "3776" && (
+                <div className="w-full items-center justify-between sm:flex">
+                  <label className="mr-2 text-sm font-semibold">
+                    ERC721 / ERC1155
+                  </label>
+                  <div className="flex w-full max-w-md items-center overflow-hidden rounded-lg border border-stone-300 ">
+                    <select
+                      name={`contracttype-${index}`}
+                      value={condition.contractType}
+                      onChange={(e) => {
+                        const newConditions = [...lockConditions];
+                        newConditions[index].contractType = e.target.value;
+                        setLockConditions(newConditions);
+                      }}
+                      className="w-full rounded-none border-none bg-white px-4 py-2 text-sm font-medium text-stone-700 focus:outline-none focus:ring-black dark:bg-black dark:text-stone-200 dark:focus:ring-white"
+                    >
+                      <option value="721">ERC721</option>
+                      <option value="1155">ERC1155</option>
+                    </select>
+                  </div>
+                </div>
+              )}
               <div className="w-full items-center justify-between sm:flex">
                 <label className="mr-2 text-sm font-semibold">
                   NFTコレクション名など

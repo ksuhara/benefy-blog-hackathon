@@ -20,7 +20,7 @@ export default async function PostSettings({
       nftLockConditions: true,
     },
   });
-  console.log(data, "data");
+  // console.log(data, "data");
   if (!data || data.userId !== session.user.id) {
     notFound();
   }
